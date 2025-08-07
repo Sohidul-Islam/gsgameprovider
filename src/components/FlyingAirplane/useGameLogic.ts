@@ -134,7 +134,15 @@ export function useGameLogic() {
       const elapsed = Date.now() - startTimeRef.current;
       const newPosition = calculateCurvePosition(elapsed);
 
+      // Always update plane position and flight path from the start
       setPlanePosition(newPosition);
+
+      // Update flight path more frequently for smoother trail
+      setFlightPath((prev) => {
+        const newPath = [...prev, { x: newPosition.x, y: newPosition.y }];
+        // Keep only the last 200 points to prevent memory issues
+        return newPath.slice(-200);
+      });
 
       // Update progress
       const currentProgress = Math.min(100, (elapsed / 8000) * 100);
@@ -145,13 +153,6 @@ export function useGameLogic() {
         setCanGuess(false);
         setGameMessage("Time's up! No more guessing allowed.");
       }
-
-      // Update flight path more frequently for smoother trail
-      setFlightPath((prev) => {
-        const newPath = [...prev, { x: newPosition.x, y: newPosition.y }];
-        // Keep only the last 200 points to prevent memory issues
-        return newPath.slice(-200);
-      });
 
       // Continue animation if plane hasn't reached the end
       if (newPosition.x < 100) {

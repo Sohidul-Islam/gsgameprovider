@@ -52,9 +52,10 @@ export default function GameControls({
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.1 }}
                 style={{
-                  background: progress >= 80 
-                    ? "linear-gradient(45deg, #ff6b6b, #ff8e8e)" 
-                    : "linear-gradient(45deg, #4ecdc4, #6dd5ed)"
+                  background:
+                    progress >= 80
+                      ? "linear-gradient(45deg, #ff6b6b, #ff8e8e)"
+                      : "linear-gradient(45deg, #4ecdc4, #6dd5ed)",
                 }}
               />
             </div>
@@ -78,7 +79,7 @@ export default function GameControls({
             transition={{ delay: 0.6, duration: 0.6 }}
           >
             <motion.button
-              className={`guess-button high ${!canGuess ? 'disabled' : ''}`}
+              className={`guess-button high ${!canGuess ? "disabled" : ""}`}
               onClick={() => onMakeGuess("high")}
               disabled={!isPlaying || !canGuess}
               whileHover={canGuess ? { scale: 1.05, y: -3 } : {}}
@@ -95,7 +96,7 @@ export default function GameControls({
               🚀 Fly High
             </motion.button>
             <motion.button
-              className={`guess-button low ${!canGuess ? 'disabled' : ''}`}
+              className={`guess-button low ${!canGuess ? "disabled" : ""}`}
               onClick={() => onMakeGuess("low")}
               disabled={!isPlaying || !canGuess}
               whileHover={canGuess ? { scale: 1.05, y: -3 } : {}}
@@ -121,7 +122,9 @@ export default function GameControls({
             transition={{ delay: 0.9 }}
           >
             {canGuess ? (
-              <span className="status-active">✅ You can still guess!</span>
+              <span className="status-active">
+                ✅ Make your guess while the plane is flying!
+              </span>
             ) : (
               <span className="status-disabled">❌ Guessing disabled</span>
             )}
@@ -172,4 +175,4 @@ export default function GameControls({
       )}
     </motion.div>
   );
-} 
+}

@@ -214,6 +214,9 @@
   align-items: center;
   justify-content: center;
   transform-origin: center;
+  /* Ensure airplane starts from the left edge */
+  left: 0%;
+  top: 50%;
 }
 
 .airplane img {
@@ -398,6 +401,12 @@
 .status-disabled {
   color: #ff6b6b;
   text-shadow: 0 0 10px rgba(255, 107, 107, 0.3);
+}
+
+.status-waiting {
+  color: #ffa726;
+  text-shadow: 0 0 10px rgba(255, 167, 38, 0.3);
+  font-weight: bold;
 }
 
 /* Result Section */
@@ -589,6 +598,11 @@
 
   .flight-container {
     height: 350px;
+  }
+
+  .airplane {
+    left: 0%;
+    top: 50%;
   }
 
   .airplane img {

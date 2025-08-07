@@ -111,7 +111,7 @@ export default function FlightCanvas({
         className="flight-canvas"
       />
 
-      {/* Airplane with image */}
+      {/* Airplane with image - positioned based on actual flight path */}
       <motion.div
         className="airplane"
         style={{
