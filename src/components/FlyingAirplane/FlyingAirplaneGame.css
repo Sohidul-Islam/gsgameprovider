@@ -1,0 +1,462 @@
+/* Flying Airplane Game Styles */
+.flying-airplane-game {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Start Screen */
+.start-screen {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 25px;
+  padding: 50px;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 550px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.start-screen::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  animation: shimmer 3s infinite;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+.game-title {
+  font-size: 2.8rem;
+  margin-bottom: 25px;
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #667eea);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 40px rgba(255, 107, 107, 0.4);
+  font-weight: bold;
+  position: relative;
+}
+
+.game-description {
+  font-size: 1.2rem;
+  margin-bottom: 35px;
+  line-height: 1.7;
+  opacity: 0.95;
+  font-weight: 400;
+}
+
+.start-button {
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+  border: none;
+  padding: 18px 45px;
+  font-size: 1.3rem;
+  color: white;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.start-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.start-button:hover::before {
+  left: 100%;
+}
+
+/* Game Container */
+.game-container {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 25px;
+  padding: 35px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 950px;
+  width: 100%;
+  position: relative;
+}
+
+/* Game Header */
+.game-header {
+  margin-bottom: 35px;
+}
+
+.score-info {
+  display: flex;
+  justify-content: space-around;
+  gap: 25px;
+}
+
+.score-item {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 20px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.score-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.score-item:hover::before {
+  opacity: 1;
+}
+
+.label {
+  display: block;
+  font-size: 1rem;
+  opacity: 0.9;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.value {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #4ecdc4;
+  text-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
+}
+
+/* Game Area */
+.game-area {
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+}
+
+/* Flight Container */
+.flight-container {
+  position: relative;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  padding: 25px;
+  height: 450px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.flight-canvas {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Airplane */
+.airplane {
+  position: absolute;
+  font-size: 3rem;
+  z-index: 15;
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.9));
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.target-score {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  background: rgba(255, 255, 255, 0.25);
+  padding: 12px 25px;
+  border-radius: 30px;
+  font-weight: bold;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  font-size: 1.1rem;
+}
+
+.position-indicator {
+  position: absolute;
+  bottom: 25px;
+  left: 25px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* Game Controls */
+.game-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 120px;
+}
+
+.guess-buttons {
+  display: flex;
+  gap: 25px;
+}
+
+.guess-button {
+  padding: 18px 35px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: bold;
+  min-width: 180px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.guess-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.guess-button:hover::before {
+  left: 100%;
+}
+
+.guess-button.high {
+  background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+  color: white;
+}
+
+.guess-button.low {
+  background: linear-gradient(45deg, #4ecdc4, #6dd5ed);
+  color: white;
+}
+
+.guess-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Result Section */
+.result-section {
+  text-align: center;
+}
+
+.result {
+  font-size: 2.2rem;
+  margin-bottom: 25px;
+  padding: 25px;
+  border-radius: 20px;
+  font-weight: bold;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.result::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: resultShimmer 2s infinite;
+}
+
+@keyframes resultShimmer {
+  0%, 100% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+}
+
+.result.correct {
+  background: linear-gradient(45deg, #4ecdc4, #44a08d);
+  color: white;
+}
+
+.result.incorrect {
+  background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+  color: white;
+}
+
+.game-message {
+  font-size: 1.3rem;
+  margin-bottom: 25px;
+  opacity: 0.95;
+  font-weight: 500;
+}
+
+.continue-button {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  border: none;
+  padding: 15px 35px;
+  font-size: 1.1rem;
+  color: white;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.continue-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.continue-button:hover::before {
+  left: 100%;
+}
+
+/* Game History */
+.game-history {
+  margin-top: 35px;
+  text-align: center;
+}
+
+.game-history h3 {
+  margin-bottom: 20px;
+  color: #4ecdc4;
+  font-size: 1.4rem;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(78, 205, 196, 0.3);
+}
+
+.history-list {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.history-item {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 12px 20px;
+  border-radius: 25px;
+  font-weight: bold;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.history-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.history-item:hover::before {
+  opacity: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .game-container {
+    padding: 25px;
+  }
+  
+  .score-info {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .guess-buttons {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .guess-button {
+    min-width: 220px;
+  }
+  
+  .game-title {
+    font-size: 2.2rem;
+  }
+  
+  .flight-container {
+    height: 350px;
+  }
+  
+  .airplane {
+    font-size: 2.5rem;
+  }
+  
+  .target-score,
+  .position-indicator {
+    font-size: 0.9rem;
+    padding: 8px 15px;
+  }
+}
+
+/* Enhanced animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.5); }
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+} 
