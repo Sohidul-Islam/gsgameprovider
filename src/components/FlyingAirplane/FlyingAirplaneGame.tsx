@@ -17,6 +17,8 @@ export default function FlyingAirplaneGame() {
     gameMessage,
     showStartScreen,
     flightPath,
+    progress,
+    canGuess,
     startGame,
     makeGuess,
     continueGame,
@@ -60,6 +62,8 @@ export default function FlyingAirplaneGame() {
                 showResult={showResult}
                 isCorrect={isCorrect}
                 gameMessage={gameMessage}
+                progress={progress}
+                canGuess={canGuess}
               />
             </div>
 

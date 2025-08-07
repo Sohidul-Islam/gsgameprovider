@@ -22,6 +22,8 @@ export function useGameLogic() {
   const [gameMessage, setGameMessage] = useState("");
   const [showStartScreen, setShowStartScreen] = useState(true);
   const [flightPath, setFlightPath] = useState<{ x: number; y: number }[]>([]);
+  const [progress, setProgress] = useState<number>(0); // Progress percentage (0-100)
+  const [canGuess, setCanGuess] = useState<boolean>(false); // Whether player can still guess
 
   const animationRef = useRef<number | null>(null);
   const startTimeRef = useRef<number>(0);
@@ -65,17 +67,22 @@ export function useGameLogic() {
     setGameMessage("");
     setPlanePosition({ x: 0, y: 50, angle: 0 });
     setFlightPath([]);
+    setProgress(0);
+    setCanGuess(true);
     startTimeRef.current = Date.now();
   };
 
   // Make a guess
   const makeGuess = (guess: "high" | "low") => {
-    if (!gameState.isPlaying) return;
+    if (!gameState.isPlaying || !canGuess) return;
 
     setGameState((prev) => ({
       ...prev,
       currentGuess: guess,
     }));
+
+    // Disable guessing after player makes a guess
+    setCanGuess(false);
 
     // Simulate score movement
     const finalScore = Math.floor(Math.random() * 100) + 1;
@@ -114,6 +121,8 @@ export function useGameLogic() {
     setGameMessage("");
     setPlanePosition({ x: 0, y: 50, angle: 0 });
     setFlightPath([]);
+    setProgress(0);
+    setCanGuess(true);
     startTimeRef.current = Date.now();
   };
 
@@ -126,6 +135,16 @@ export function useGameLogic() {
       const newPosition = calculateCurvePosition(elapsed);
 
       setPlanePosition(newPosition);
+
+      // Update progress
+      const currentProgress = Math.min(100, (elapsed / 8000) * 100);
+      setProgress(currentProgress);
+
+      // Disable guessing when progress reaches 80% (giving player time to see the result)
+      if (currentProgress >= 80 && canGuess) {
+        setCanGuess(false);
+        setGameMessage("Time's up! No more guessing allowed.");
+      }
 
       // Update flight path more frequently for smoother trail
       setFlightPath((prev) => {
@@ -143,6 +162,18 @@ export function useGameLogic() {
           ...prev,
           isPlaying: false,
         }));
+        setCanGuess(false);
+        if (!gameState.currentGuess) {
+          setGameMessage("You didn't make a guess! -5 points");
+          setGameState((prev) => ({
+            ...prev,
+            score: prev.score - 5,
+            gameHistory: [
+              ...prev.gameHistory,
+              Math.floor(Math.random() * 100) + 1,
+            ],
+          }));
+        }
       }
     };
 
@@ -153,7 +184,7 @@ export function useGameLogic() {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [gameState.isPlaying]);
+  }, [gameState.isPlaying, canGuess, gameState.currentGuess]);
 
   return {
     gameState,
@@ -164,6 +195,8 @@ export function useGameLogic() {
     gameMessage,
     showStartScreen,
     flightPath,
+    progress,
+    canGuess,
     startGame,
     makeGuess,
     continueGame,

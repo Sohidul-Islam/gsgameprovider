@@ -133,8 +133,8 @@ export default function FlightCanvas({
           src={airplaneImage}
           alt="Airplane"
           style={{
-            width: "40px",
-            height: "40px",
+            width: "100px",
+            height: "100px",
             filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.3))",
           }}
         />
