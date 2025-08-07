@@ -11,4 +11,4 @@ export interface PlanePosition {
   x: number;
   y: number;
   angle: number;
-} 
+}

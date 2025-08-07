@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { GameState, PlanePosition } from "./types";
+import type { GameState, PlanePosition } from "./types";
 
 export function useGameLogic() {
   const [gameState, setGameState] = useState<GameState>({
@@ -12,7 +12,7 @@ export function useGameLogic() {
   });
 
   const [planePosition, setPlanePosition] = useState<PlanePosition>({
-    x: 50,
+    x: 0,
     y: 50,
     angle: 0,
   });
@@ -24,19 +24,30 @@ export function useGameLogic() {
   const [flightPath, setFlightPath] = useState<{ x: number; y: number }[]>([]);
 
   const animationRef = useRef<number | null>(null);
+  const startTimeRef = useRef<number>(0);
 
   // Generate random target score
   const generateTargetScore = (): number => {
     return Math.floor(Math.random() * 100) + 1;
   };
 
-  // Calculate curve position based on time
+  // Calculate smooth curve position based on time
   const calculateCurvePosition = (time: number): PlanePosition => {
-    const x = (time / 100) * 100; // Move across screen
-    const y = 50 + Math.sin(time * 0.02) * 30; // Sine wave curve
-    const angle = Math.cos(time * 0.02) * 15; // Angle based on curve direction
+    // Slower, smoother movement across the screen
+    const x = Math.min(100, (time / 8000) * 100); // Takes 8 seconds to cross screen
 
-    return { x: Math.max(0, Math.min(100, x)), y, angle };
+    // Create a smoother sine wave with multiple cycles
+    const progress = x / 100;
+    const y = 50 + Math.sin(progress * Math.PI * 3) * 35; // 3 cycles, smaller amplitude
+
+    // Calculate angle based on the derivative of the curve for realistic rotation
+    const angle = Math.cos(progress * Math.PI * 3) * 20; // Smoother angle changes
+
+    return {
+      x: Math.max(0, Math.min(100, x)),
+      y: Math.max(10, Math.min(90, y)), // Keep within bounds
+      angle,
+    };
   };
 
   // Start new game
@@ -54,6 +65,7 @@ export function useGameLogic() {
     setGameMessage("");
     setPlanePosition({ x: 0, y: 50, angle: 0 });
     setFlightPath([]);
+    startTimeRef.current = Date.now();
   };
 
   // Make a guess
@@ -102,28 +114,35 @@ export function useGameLogic() {
     setGameMessage("");
     setPlanePosition({ x: 0, y: 50, angle: 0 });
     setFlightPath([]);
+    startTimeRef.current = Date.now();
   };
 
-  // Animate airplane along curve
+  // Animate airplane along curve with smooth movement
   useEffect(() => {
     if (!gameState.isPlaying) return;
 
-    const startTime = Date.now();
     const animate = () => {
-      const elapsed = Date.now() - startTime;
+      const elapsed = Date.now() - startTimeRef.current;
       const newPosition = calculateCurvePosition(elapsed);
 
       setPlanePosition(newPosition);
 
-      // Update flight path
-      setFlightPath((prev) => [
-        ...prev,
-        { x: newPosition.x, y: newPosition.y },
-      ]);
+      // Update flight path more frequently for smoother trail
+      setFlightPath((prev) => {
+        const newPath = [...prev, { x: newPosition.x, y: newPosition.y }];
+        // Keep only the last 200 points to prevent memory issues
+        return newPath.slice(-200);
+      });
 
       // Continue animation if plane hasn't reached the end
       if (newPosition.x < 100) {
         animationRef.current = requestAnimationFrame(animate);
+      } else {
+        // Plane reached the end, stop animation
+        setGameState((prev) => ({
+          ...prev,
+          isPlaying: false,
+        }));
       }
     };
 
@@ -149,4 +168,4 @@ export function useGameLogic() {
     makeGuess,
     continueGame,
   };
-} 
+}
