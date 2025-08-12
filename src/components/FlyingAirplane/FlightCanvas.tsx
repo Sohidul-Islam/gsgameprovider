@@ -20,6 +20,16 @@ export default function FlightCanvas({
   targetScore,
 }: FlightCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const airplaneImgRef = useRef<HTMLImageElement>(null);
+
+  // Preload airplane image
+  useEffect(() => {
+    const img = new Image();
+    img.src = airplaneImage;
+    img.onload = () => {
+      airplaneImgRef.current = img;
+    };
+  }, []);
 
   // Draw flight path and curve
   useEffect(() => {
@@ -67,13 +77,13 @@ export default function FlightCanvas({
       flightPath.forEach((point, index) => {
         if (index % 10 === 0) {
           // Add dot every 10 points
-          const x = (point.x / 100) * canvas.width;
-          const y = (point.y / 100) * canvas.height;
+          // const x = (point.x / 100) * canvas.width;
+          // const y = (point.y / 100) * canvas.height;
 
-          ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
-          ctx.beginPath();
-          ctx.arc(x, y, 3, 0, 2 * Math.PI);
-          ctx.fill();
+          // ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
+          // ctx.beginPath();
+          // ctx.arc(x, y, 3, 0, 2 * Math.PI);
+          // ctx.fill();s
         }
       });
     }
@@ -84,16 +94,41 @@ export default function FlightCanvas({
       const y = (planePosition.y / 100) * canvas.height;
 
       // Outer glow
-      ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
-      ctx.beginPath();
-      ctx.arc(x, y, 12, 0, 2 * Math.PI);
-      ctx.fill();
+      // ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+      // ctx.beginPath();
+      // ctx.arc(x, y, 12, 0, 2 * Math.PI);
+      // ctx.fill();
 
       // Inner dot
-      ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
-      ctx.beginPath();
-      ctx.arc(x, y, 6, 0, 2 * Math.PI);
-      ctx.fill();
+      // ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+      // ctx.beginPath();
+      // ctx.arc(x, y, 6, 0, 2 * Math.PI);
+      // ctx.fill();
+
+      // Draw airplane image at the current position
+      if (airplaneImgRef.current) {
+        const img = airplaneImgRef.current;
+        const imgSize = 100; // Smaller size for better fit
+        
+        // Save context state
+        ctx.save();
+        
+        // Move to airplane position and rotate
+        ctx.translate(x, y);
+        ctx.rotate((planePosition.angle * Math.PI) / 180);
+        
+        // Draw airplane image centered at position
+        ctx.drawImage(
+          img,
+          -imgSize / 2,
+          -imgSize / 2,
+          imgSize,
+          imgSize
+        );
+        
+        // Restore context state
+        ctx.restore();
+      }
     }
   }, [planePosition, flightPath]);
 
@@ -110,35 +145,6 @@ export default function FlightCanvas({
         height={400}
         className="flight-canvas"
       />
-
-      {/* Airplane with image - positioned based on actual flight path */}
-      <motion.div
-        className="airplane"
-        style={{
-          left: `${planePosition.x}%`,
-          top: `${planePosition.y}%`,
-          transform: `rotate(${planePosition.angle}deg)`,
-        }}
-        animate={{
-          y: [0, -3, 0],
-        }}
-        transition={{
-          duration: 1.5,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        whileHover={{ scale: 1.1 }}
-      >
-        <img
-          src={airplaneImage}
-          alt="Airplane"
-          style={{
-            width: "100px",
-            height: "100px",
-            filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.3))",
-          }}
-        />
-      </motion.div>
 
       {/* Target Score */}
       <motion.div
