@@ -93,14 +93,12 @@ export default function FlightCanvas({
       ctx.strokeStyle = pathGradient;
 
       ctx.beginPath();
-      ctx.moveTo(
-        (flightPath[0].x / 100) * canvas.width,
-        (flightPath[0].y / 100) * canvas.height
-      );
 
-      ctx.stroke();
+      // Always start from the beginning position (0, 50) to ensure stroke is visible from start
+      ctx.moveTo(0, (50 / 100) * canvas.height);
 
-      for (let i = 1; i < flightPath.length; i++) {
+      // Draw the actual flight path
+      for (let i = 0; i < flightPath.length; i++) {
         ctx.lineTo(
           (flightPath[i].x / 100) * canvas.width,
           (flightPath[i].y / 100) * canvas.height
@@ -112,12 +110,12 @@ export default function FlightCanvas({
       ctx.fillStyle = "rgba(255, 68, 68, 0.1)";
       ctx.beginPath();
       ctx.moveTo(0, canvas.height);
-      ctx.lineTo(
-        (flightPath[0].x / 100) * canvas.width,
-        (flightPath[0].y / 100) * canvas.height
-      );
 
-      for (let i = 1; i < flightPath.length; i++) {
+      // Start fill from beginning position
+      ctx.lineTo(0, (50 / 100) * canvas.height);
+
+      // Fill under the actual flight path
+      for (let i = 0; i < flightPath.length; i++) {
         ctx.lineTo(
           (flightPath[i].x / 100) * canvas.width,
           (flightPath[i].y / 100) * canvas.height
@@ -158,7 +156,6 @@ export default function FlightCanvas({
     }
 
     if (isCrashed) {
-      // clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
   }, [planePosition, flightPath, gamePhase, isCrashed]);
