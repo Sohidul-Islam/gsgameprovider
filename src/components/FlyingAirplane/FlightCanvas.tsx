@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import type { PlanePosition } from "./types";
+import airplaneImage from "../../assets/aroplan.png";
 import "./FlyingAirplaneGame.css";
 
 interface FlightCanvasProps {
@@ -21,6 +22,16 @@ export default function FlightCanvas({
   gamePhase,
 }: FlightCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const airplaneImgRef = useRef<HTMLImageElement>(null);
+
+  // Preload airplane image
+  useEffect(() => {
+    const img = new Image();
+    img.src = airplaneImage;
+    img.onload = () => {
+      airplaneImgRef.current = img;
+    };
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -115,43 +126,29 @@ export default function FlightCanvas({
       ctx.fill();
     }
 
-    // Draw airplane only during flying phase and if not crashed
-    if (gamePhase === "flying" && !isCrashed) {
+    // Draw airplane image only during flying phase and if not crashed
+    if (airplaneImgRef.current && gamePhase === "flying" && !isCrashed) {
+      const img = airplaneImgRef.current;
+      const imgSize = 80;
+
       const x = (planePosition.x / 100) * canvas.width;
       const y = (planePosition.y / 100) * canvas.height;
 
-      // Draw airplane glow
-      ctx.shadowColor = "#ff4444";
-      ctx.shadowBlur = 20;
-      ctx.fillStyle = "#ff4444";
-
-      // Draw airplane body
+      // Save context state
       ctx.save();
+
+      // Move to airplane position and rotate
       ctx.translate(x, y);
       ctx.rotate((planePosition.angle * Math.PI) / 180);
 
-      // Airplane body
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(-15, -5, 30, 10);
+      // Add glow effect
+      ctx.shadowColor = "#ff4444";
+      ctx.shadowBlur = 20;
 
-      // Airplane wings
-      ctx.fillStyle = "#ff4444";
-      ctx.fillRect(-10, -15, 20, 5);
-      ctx.fillRect(-10, 10, 20, 5);
+      // Draw airplane image centered at position
+      ctx.drawImage(img, -imgSize / 2, -imgSize / 2, imgSize, imgSize);
 
-      // Airplane tail
-      ctx.fillStyle = "#ff4444";
-      ctx.fillRect(10, -8, 8, 16);
-
-      // Airplane nose
-      ctx.fillStyle = "#ff4444";
-      ctx.beginPath();
-      ctx.moveTo(-15, 0);
-      ctx.lineTo(-25, -3);
-      ctx.lineTo(-25, 3);
-      ctx.closePath();
-      ctx.fill();
-
+      // Restore context state
       ctx.restore();
       ctx.shadowBlur = 0;
     }
@@ -168,7 +165,9 @@ export default function FlightCanvas({
         const x = centerX + Math.cos(angle) * distance;
         const y = centerY + Math.sin(angle) * distance;
 
-        ctx.fillStyle = `rgba(255, ${68 + Math.random() * 100}, ${68 + Math.random() * 100}, ${0.8 + Math.random() * 0.2})`;
+        ctx.fillStyle = `rgba(255, ${68 + Math.random() * 100}, ${
+          68 + Math.random() * 100
+        }, ${0.8 + Math.random() * 0.2})`;
         ctx.beginPath();
         ctx.arc(x, y, 3 + Math.random() * 5, 0, Math.PI * 2);
         ctx.fill();
