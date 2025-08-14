@@ -132,7 +132,7 @@ export default function FlightCanvas({
       ((gamePhase === "flying" && !isCrashed) || gamePhase === "crashed")
     ) {
       const img = airplaneImgRef.current;
-      const imgSize = 100;
+      const imgSize = 80;
 
       const x = (planePosition.x / 100) * canvas.width;
       const y = (planePosition.y / 100) * canvas.height;
