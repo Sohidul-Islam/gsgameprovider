@@ -139,11 +139,11 @@ export default function FlightCanvas({
 
       // Move to airplane position and rotate
       ctx.translate(x, y);
-      ctx.rotate((planePosition.angle * Math.PI) / 180);
+      // ctx.rotate((planePosition.angle * Math.PI) / 180);
 
       // Add glow effect
-      ctx.shadowColor = "#ff4444";
-      ctx.shadowBlur = 20;
+      // ctx.shadowColor = "#ff4444";
+      // ctx.shadowBlur = 20;
 
       // Draw airplane image centered at position
       ctx.drawImage(img, -imgSize / 2, -imgSize / 2, imgSize, imgSize);
@@ -221,7 +221,7 @@ export default function FlightCanvas({
           className="crash-message"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5, type: "spring" }}
+          transition={{ duration: 0.5 }}
         >
           💥 CRASHED!
         </motion.div>
