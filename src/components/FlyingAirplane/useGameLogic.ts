@@ -114,22 +114,21 @@ export function useGameLogic() {
     const elapsedSeconds = time / 1000;
     const crashTime = flightDuration; // Use the random flight duration
 
+    // Clamp time to crash time so last position is preserved at crash
+    const clampedElapsed = Math.min(elapsedSeconds, crashTime);
+
+    // Flag crash once we reach crash time
     if (elapsedSeconds >= crashTime) {
-      // Plane has crashed
       setIsCrashed(true);
-      return {
-        x: 100,
-        y: 0,
-        angle: -90,
-      };
     }
 
     // Calculate current multiplier with slower growth
-    const currentMultiplier = Math.pow(Math.E, elapsedSeconds / 4); // Slower growth (divided by 4 instead of 2)
+    const currentMultiplier = Math.pow(Math.E, clampedElapsed / 4); // Slower growth (divided by 4 instead of 2)
     setGameState((prev) => ({ ...prev, currentMultiplier }));
 
-    // Calculate position based on multiplier
-    const progress = Math.min(1, elapsedSeconds / crashTime);
+    // Calculate position based on progress
+    const progress =
+      crashTime > 0 ? Math.min(1, clampedElapsed / crashTime) : 0;
     const x = progress * 100;
 
     // Create a smooth upward curve with slower movement

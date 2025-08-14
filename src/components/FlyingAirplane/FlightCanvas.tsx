@@ -127,9 +127,12 @@ export default function FlightCanvas({
     }
 
     // Draw airplane image only during flying phase and if not crashed
-    if (airplaneImgRef.current && gamePhase === "flying" && !isCrashed) {
+    if (
+      airplaneImgRef.current &&
+      ((gamePhase === "flying" && !isCrashed) || gamePhase === "crashed")
+    ) {
       const img = airplaneImgRef.current;
-      const imgSize = 80;
+      const imgSize = 100;
 
       const x = (planePosition.x / 100) * canvas.width;
       const y = (planePosition.y / 100) * canvas.height;
@@ -142,8 +145,8 @@ export default function FlightCanvas({
       // ctx.rotate((planePosition.angle * Math.PI) / 180);
 
       // Add glow effect
-      // ctx.shadowColor = "#ff4444";
-      // ctx.shadowBlur = 20;
+      ctx.shadowColor = "#ff4444";
+      ctx.shadowBlur = 20;
 
       // Draw airplane image centered at position
       ctx.drawImage(img, -imgSize / 2, -imgSize / 2, imgSize, imgSize);
@@ -151,6 +154,11 @@ export default function FlightCanvas({
       // Restore context state
       ctx.restore();
       ctx.shadowBlur = 0;
+    }
+
+    if (isCrashed) {
+      // clear canvas pls
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
     // // Draw crash effect
