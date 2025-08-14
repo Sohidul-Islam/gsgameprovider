@@ -12,9 +12,9 @@ export default function GameHistory({ gameHistory }: GameHistoryProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.6, duration: 0.6 }}
     >
-      <h3>Recent Scores</h3>
+      <h3>Recent Crashes</h3>
       <div className="history-list">
-        {gameHistory.slice(-5).map((score, index) => (
+        {gameHistory.slice(-5).map((multiplier, index) => (
           <motion.div
             key={index}
             className="history-item"
@@ -27,11 +27,15 @@ export default function GameHistory({ gameHistory }: GameHistoryProps) {
               duration: 0.6,
             }}
             whileHover={{ scale: 1.1 }}
+            style={{
+              color: multiplier >= 2 ? "#22c55e" : "#ff4444",
+              borderColor: multiplier >= 2 ? "#22c55e" : "#ff4444",
+            }}
           >
-            {score}
+            {multiplier.toFixed(2)}x
           </motion.div>
         ))}
       </div>
     </motion.div>
   );
-} 
+}

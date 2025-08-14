@@ -1,0 +1,290 @@
+.betting-panels {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+  padding: 0 20px;
+}
+
+.betting-panel {
+  background: #2a2a2a;
+  border-radius: 12px;
+  padding: 20px;
+  width: 280px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid #3a3a3a;
+}
+
+.bet-auto-toggle {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 15px;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 8px 12px;
+  background: #3a3a3a;
+  border: none;
+  border-radius: 6px;
+  color: #888;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-btn.active {
+  background: #4a4a4a;
+  color: #fff;
+}
+
+.toggle-btn:hover:not(.active) {
+  background: #404040;
+  color: #ccc;
+}
+
+.bet-amount-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.amount-btn {
+  width: 32px;
+  height: 32px;
+  background: #3a3a3a;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.amount-btn:hover:not(:disabled) {
+  background: #4a4a4a;
+}
+
+.amount-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.bet-input {
+  flex: 1;
+  height: 32px;
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
+  padding: 0 8px;
+}
+
+.bet-input:focus {
+  outline: none;
+  border-color: #4a90e2;
+}
+
+.bet-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quick-bet-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.quick-bet-btn {
+  padding: 8px 12px;
+  background: #3a3a3a;
+  border: none;
+  border-radius: 6px;
+  color: #ccc;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quick-bet-btn:hover:not(:disabled) {
+  background: #4a4a4a;
+  color: #fff;
+}
+
+.quick-bet-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.place-bet-btn {
+  width: 100%;
+  height: 60px;
+  background: #22c55e;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.place-bet-btn.active:hover {
+  background: #16a34a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.place-bet-btn.disabled {
+  background: #374151;
+  color: #6b7280;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.bet-text {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.bet-amount {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.history-icon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.history-icon:hover {
+  color: #9ca3af;
+}
+
+.cash-out-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+}
+
+.cash-out-btn {
+  background: linear-gradient(135deg, #f59e0b, #f97316);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 20px 40px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+  animation: pulse 2s infinite;
+}
+
+.cash-out-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(245, 158, 11, 0.6);
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
+
+.game-result {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #1a1a1a;
+  border-radius: 16px;
+  padding: 30px;
+  text-align: center;
+  z-index: 1000;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  border: 2px solid;
+  min-width: 300px;
+}
+
+.game-result.win {
+  border-color: #22c55e;
+  background: linear-gradient(135deg, #1a1a1a, #0f2e1a);
+}
+
+.game-result.loss {
+  border-color: #ef4444;
+  background: linear-gradient(135deg, #1a1a1a, #2e0f0f);
+}
+
+.result-message {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.continue-btn {
+  background: #4a90e2;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.continue-btn:hover {
+  background: #357abd;
+  transform: translateY(-2px);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .betting-panels {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .betting-panel {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .cash-out-btn {
+    font-size: 16px;
+    padding: 16px 32px;
+  }
+
+  .game-result {
+    min-width: 280px;
+    padding: 20px;
+  }
+}

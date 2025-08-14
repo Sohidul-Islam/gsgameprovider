@@ -11,17 +11,19 @@ export default function FlyingAirplaneGame() {
   const {
     gameState,
     planePosition,
-    targetScore,
     showResult,
-    isCorrect,
     gameMessage,
     showStartScreen,
     flightPath,
     progress,
-    canGuess,
+    canBet,
+    isCrashed,
     startGame,
-    makeGuess,
+    placeBet,
+    cashOut,
     continueGame,
+    updateBetAmount,
+    toggleAutoBet,
   } = useGameLogic();
 
   return (
@@ -40,9 +42,10 @@ export default function FlyingAirplaneGame() {
           >
             {/* Header */}
             <GameHeader
-              score={gameState.score}
-              streak={gameState.streak}
-              bestStreak={gameState.bestStreak}
+              balance={gameState.balance}
+              betAmount={gameState.betAmount}
+              currentMultiplier={gameState.currentMultiplier}
+              playerCount={gameState.playerCount}
             />
 
             {/* Game Area */}
@@ -51,19 +54,29 @@ export default function FlyingAirplaneGame() {
               <FlightCanvas
                 planePosition={planePosition}
                 flightPath={flightPath}
-                targetScore={targetScore}
+                currentMultiplier={gameState.currentMultiplier}
+                playerCount={gameState.playerCount}
+                isCrashed={isCrashed}
               />
 
               {/* Game Controls */}
               <GameControls
                 isPlaying={gameState.isPlaying}
-                onMakeGuess={makeGuess}
+                onPlaceBet={placeBet}
+                onCashOut={cashOut}
                 onContinue={continueGame}
                 showResult={showResult}
-                isCorrect={isCorrect}
                 gameMessage={gameMessage}
                 progress={progress}
-                canGuess={canGuess}
+                canBet={canBet}
+                isCrashed={isCrashed}
+                balance={gameState.balance}
+                betAmount={gameState.betAmount}
+                currentMultiplier={gameState.currentMultiplier}
+                isAutoBet={gameState.isAutoBet}
+                onUpdateBetAmount={updateBetAmount}
+                onToggleAutoBet={toggleAutoBet}
+                gameResult={gameState.gameResult}
               />
             </div>
 

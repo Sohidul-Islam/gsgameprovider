@@ -32,7 +32,7 @@ export default function StartScreen({ onStartGame }: StartScreenProps) {
             ease: "easeInOut",
           }}
         >
-          ✈️ Airplane Guessing Game
+          🚀 Crash Game
         </motion.h1>
         <motion.p
           className="game-description"
@@ -40,8 +40,9 @@ export default function StartScreen({ onStartGame }: StartScreenProps) {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.8 }}
         >
-          Watch the airplane follow the curve and guess if it will fly high or
-          low! The plane's position shows the actual flight path.
+          Place your bet and watch the multiplier grow! Cash out before the
+          plane crashes to win big. The higher the multiplier, the bigger your
+          payout - but be careful, it can crash at any moment!
         </motion.p>
         <motion.button
           className="start-button"
@@ -52,7 +53,7 @@ export default function StartScreen({ onStartGame }: StartScreenProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.6 }}
         >
-          Start Game
+          Start Betting
         </motion.button>
       </motion.div>
     </motion.div>

@@ -1,12 +1,18 @@
 import { motion } from "framer-motion";
 
 interface GameHeaderProps {
-  score: number;
-  streak: number;
-  bestStreak: number;
+  balance: number;
+  betAmount: number;
+  currentMultiplier: number;
+  playerCount: number;
 }
 
-export default function GameHeader({ score, streak, bestStreak }: GameHeaderProps) {
+export default function GameHeader({
+  balance,
+  betAmount,
+  currentMultiplier,
+  playerCount,
+}: GameHeaderProps) {
   return (
     <motion.div
       className="game-header"
@@ -20,15 +26,15 @@ export default function GameHeader({ score, streak, bestStreak }: GameHeaderProp
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
-          <span className="label">Score:</span>
+          <span className="label">Balance:</span>
           <motion.span
             className="value"
-            key={score}
-            initial={{ scale: 1.2, color: "#4ecdc4" }}
-            animate={{ scale: 1, color: "#4ecdc4" }}
+            key={balance}
+            initial={{ scale: 1.2, color: "#22c55e" }}
+            animate={{ scale: 1, color: "#22c55e" }}
             transition={{ duration: 0.4 }}
           >
-            {score}
+            {balance.toFixed(2)} BDT
           </motion.span>
         </motion.div>
         <motion.div
@@ -36,15 +42,15 @@ export default function GameHeader({ score, streak, bestStreak }: GameHeaderProp
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
-          <span className="label">Streak:</span>
+          <span className="label">Bet Amount:</span>
           <motion.span
             className="value"
-            key={streak}
-            initial={{ scale: 1.2, color: "#ff6b6b" }}
-            animate={{ scale: 1, color: "#4ecdc4" }}
+            key={betAmount}
+            initial={{ scale: 1.2, color: "#f59e0b" }}
+            animate={{ scale: 1, color: "#f59e0b" }}
             transition={{ duration: 0.4 }}
           >
-            {streak}
+            {betAmount.toFixed(2)} BDT
           </motion.span>
         </motion.div>
         <motion.div
@@ -52,10 +58,34 @@ export default function GameHeader({ score, streak, bestStreak }: GameHeaderProp
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
-          <span className="label">Best:</span>
-          <span className="value">{bestStreak}</span>
+          <span className="label">Multiplier:</span>
+          <motion.span
+            className="value"
+            key={currentMultiplier}
+            initial={{ scale: 1.2, color: "#ff4444" }}
+            animate={{ scale: 1, color: "#ff4444" }}
+            transition={{ duration: 0.4 }}
+          >
+            {currentMultiplier.toFixed(2)}x
+          </motion.span>
+        </motion.div>
+        <motion.div
+          className="score-item"
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 300 }}
+        >
+          <span className="label">Players:</span>
+          <motion.span
+            className="value"
+            key={playerCount}
+            initial={{ scale: 1.2, color: "#4a90e2" }}
+            animate={{ scale: 1, color: "#4a90e2" }}
+            transition={{ duration: 0.4 }}
+          >
+            {playerCount.toLocaleString()}
+          </motion.span>
         </motion.div>
       </div>
     </motion.div>
   );
-} 
+}
