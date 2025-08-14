@@ -153,26 +153,26 @@ export default function FlightCanvas({
       ctx.shadowBlur = 0;
     }
 
-    // Draw crash effect
-    if (isCrashed) {
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
+    // // Draw crash effect
+    // if (isCrashed) {
+    //   const centerX = canvas.width / 2;
+    //   const centerY = canvas.height / 2;
 
-      // Explosion effect
-      for (let i = 0; i < 20; i++) {
-        const angle = (i * Math.PI * 2) / 20;
-        const distance = 50 + Math.random() * 30;
-        const x = centerX + Math.cos(angle) * distance;
-        const y = centerY + Math.sin(angle) * distance;
+    //   // Explosion effect
+    //   for (let i = 0; i < 20; i++) {
+    //     const angle = (i * Math.PI * 2) / 20;
+    //     const distance = 50 + Math.random() * 30;
+    //     const x = centerX + Math.cos(angle) * distance;
+    //     const y = centerY + Math.sin(angle) * distance;
 
-        ctx.fillStyle = `rgba(255, ${68 + Math.random() * 100}, ${
-          68 + Math.random() * 100
-        }, ${0.8 + Math.random() * 0.2})`;
-        ctx.beginPath();
-        ctx.arc(x, y, 3 + Math.random() * 5, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
+    //     ctx.fillStyle = `rgba(255, ${68 + Math.random() * 100}, ${
+    //       68 + Math.random() * 100
+    //     }, ${0.8 + Math.random() * 0.2})`;
+    //     ctx.beginPath();
+    //     ctx.arc(x, y, 3 + Math.random() * 5, 0, Math.PI * 2);
+    //     ctx.fill();
+    //   }
+    // }
   }, [planePosition, flightPath, gamePhase, isCrashed]);
 
   return (
