@@ -18,6 +18,8 @@ export default function FlyingAirplaneGame() {
     progress,
     canBet,
     isCrashed,
+    showNotification,
+    isShaking,
     startGame,
     placeBet,
     cashOut,
@@ -27,7 +29,22 @@ export default function FlyingAirplaneGame() {
   } = useGameLogic();
 
   return (
-    <div className="flying-airplane-game">
+    <div className={`flying-airplane-game ${isShaking ? "shake" : ""}`}>
+      {/* Notification System */}
+      <AnimatePresence>
+        {showNotification && (
+          <motion.div
+            className="notification"
+            initial={{ opacity: 0, y: -50, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -50, scale: 0.8 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          >
+            <span className="notification-text">{showNotification}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <AnimatePresence mode="wait">
         {showStartScreen ? (
           <StartScreen onStartGame={startGame} />
@@ -57,6 +74,7 @@ export default function FlyingAirplaneGame() {
                 currentMultiplier={gameState.currentMultiplier}
                 playerCount={gameState.playerCount}
                 isCrashed={isCrashed}
+                gamePhase={gameState.gamePhase}
               />
 
               {/* Game Controls */}
@@ -77,6 +95,9 @@ export default function FlyingAirplaneGame() {
                 onUpdateBetAmount={updateBetAmount}
                 onToggleAutoBet={toggleAutoBet}
                 gameResult={gameState.gameResult}
+                bettingTimeLeft={gameState.bettingTimeLeft}
+                gamePhase={gameState.gamePhase}
+                hasPlacedBet={gameState.hasPlacedBet}
               />
             </div>
 

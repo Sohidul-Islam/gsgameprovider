@@ -1,12 +1,7 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import airplaneImage from "../../assets/aroplan.png";
-
-interface PlanePosition {
-  x: number;
-  y: number;
-  angle: number;
-}
+import type { PlanePosition } from "./types";
+import "./FlyingAirplaneGame.css";
 
 interface FlightCanvasProps {
   planePosition: PlanePosition;
@@ -14,6 +9,7 @@ interface FlightCanvasProps {
   currentMultiplier: number;
   playerCount: number;
   isCrashed: boolean;
+  gamePhase: "betting" | "flying" | "crashed";
 }
 
 export default function FlightCanvas({
@@ -22,20 +18,10 @@ export default function FlightCanvas({
   currentMultiplier,
   playerCount,
   isCrashed,
+  gamePhase,
 }: FlightCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const airplaneImgRef = useRef<HTMLImageElement>(null);
 
-  // Preload airplane image
-  useEffect(() => {
-    const img = new Image();
-    img.src = airplaneImage;
-    img.onload = () => {
-      airplaneImgRef.current = img;
-    };
-  }, []);
-
-  // Draw flight path and curve
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -43,179 +29,204 @@ export default function FlightCanvas({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    // Set canvas size
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Create radial gradient background
     const gradient = ctx.createRadialGradient(
-      canvas.width * 0.2,
-      canvas.height * 0.8,
+      canvas.width / 2,
+      canvas.height / 2,
       0,
-      canvas.width * 0.5,
-      canvas.height * 0.5,
-      canvas.width * 0.8
+      canvas.width / 2,
+      canvas.height / 2,
+      canvas.width / 2
     );
-    gradient.addColorStop(0, "#000000");
-    gradient.addColorStop(0.3, "#0a0a0a");
-    gradient.addColorStop(0.7, "#1a1a2e");
-    gradient.addColorStop(1, "#16213e");
+    gradient.addColorStop(0, "rgba(255, 68, 68, 0.1)");
+    gradient.addColorStop(0.5, "rgba(255, 68, 68, 0.05)");
+    gradient.addColorStop(1, "rgba(0, 0, 0, 0.3)");
 
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Draw radial rays from bottom left
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
+    // Draw radial rays
+    ctx.strokeStyle = "rgba(255, 68, 68, 0.1)";
     ctx.lineWidth = 1;
-    for (let i = 0; i < 20; i++) {
-      const angle = (i * Math.PI) / 40;
-      const x1 = 0;
-      const y1 = canvas.height;
-      const x2 = canvas.width * Math.cos(angle);
-      const y2 = canvas.height - canvas.height * Math.sin(angle);
-
+    for (let i = 0; i < 12; i++) {
+      const angle = (i * Math.PI * 2) / 12;
+      const x1 = canvas.width / 2;
+      const y1 = canvas.height / 2;
+      const x2 = x1 + Math.cos(angle) * canvas.width;
+      const y2 = y1 + Math.sin(angle) * canvas.width;
       ctx.beginPath();
       ctx.moveTo(x1, y1);
       ctx.lineTo(x2, y2);
       ctx.stroke();
     }
 
-    // Draw red graph line (crash curve)
+    // Draw flight path
     if (flightPath.length > 1) {
-      // Create gradient for the line
-      const lineGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-      lineGradient.addColorStop(0, "#ff4444");
-      lineGradient.addColorStop(1, "#ff6666");
-
-      ctx.strokeStyle = lineGradient;
-      ctx.lineWidth = 6;
+      ctx.strokeStyle = "#ff4444";
+      ctx.lineWidth = 3;
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
+
+      // Create gradient for flight path
+      const pathGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+      pathGradient.addColorStop(0, "#ff4444");
+      pathGradient.addColorStop(0.5, "#ff6666");
+      pathGradient.addColorStop(1, "#ff8888");
+      ctx.strokeStyle = pathGradient;
+
       ctx.beginPath();
+      ctx.moveTo(
+        (flightPath[0].x / 100) * canvas.width,
+        (flightPath[0].y / 100) * canvas.height
+      );
 
-      flightPath.forEach((point, index) => {
-        const x = (point.x / 100) * canvas.width;
-        const y = (point.y / 100) * canvas.height;
-
-        if (index === 0) {
-          ctx.moveTo(x, y);
-        } else {
-          ctx.lineTo(x, y);
-        }
-      });
+      for (let i = 1; i < flightPath.length; i++) {
+        ctx.lineTo(
+          (flightPath[i].x / 100) * canvas.width,
+          (flightPath[i].y / 100) * canvas.height
+        );
+      }
       ctx.stroke();
 
-      // Fill area under the curve
-      ctx.fillStyle = "rgba(255, 68, 68, 0.2)";
+      // Fill area under flight path
+      ctx.fillStyle = "rgba(255, 68, 68, 0.1)";
       ctx.beginPath();
       ctx.moveTo(0, canvas.height);
+      ctx.lineTo(
+        (flightPath[0].x / 100) * canvas.width,
+        (flightPath[0].y / 100) * canvas.height
+      );
 
-      flightPath.forEach((point) => {
-        const x = (point.x / 100) * canvas.width;
-        const y = (point.y / 100) * canvas.height;
-        ctx.lineTo(x, y);
-      });
-
+      for (let i = 1; i < flightPath.length; i++) {
+        ctx.lineTo(
+          (flightPath[i].x / 100) * canvas.width,
+          (flightPath[i].y / 100) * canvas.height
+        );
+      }
       ctx.lineTo(canvas.width, canvas.height);
       ctx.closePath();
       ctx.fill();
     }
 
-    // Draw airplane image at the current position
-    if (airplaneImgRef.current && !isCrashed) {
-      const img = airplaneImgRef.current;
-      const imgSize = 80;
-
+    // Draw airplane only during flying phase and if not crashed
+    if (gamePhase === "flying" && !isCrashed) {
       const x = (planePosition.x / 100) * canvas.width;
       const y = (planePosition.y / 100) * canvas.height;
 
-      // Save context state
-      ctx.save();
+      // Draw airplane glow
+      ctx.shadowColor = "#ff4444";
+      ctx.shadowBlur = 20;
+      ctx.fillStyle = "#ff4444";
 
-      // Move to airplane position and rotate
+      // Draw airplane body
+      ctx.save();
       ctx.translate(x, y);
       ctx.rotate((planePosition.angle * Math.PI) / 180);
 
-      // Add glow effect
-      ctx.shadowColor = "#ff4444";
-      ctx.shadowBlur = 20;
+      // Airplane body
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(-15, -5, 30, 10);
 
-      // Draw airplane image centered at position
-      ctx.drawImage(img, -imgSize / 2, -imgSize / 2, imgSize, imgSize);
+      // Airplane wings
+      ctx.fillStyle = "#ff4444";
+      ctx.fillRect(-10, -15, 20, 5);
+      ctx.fillRect(-10, 10, 20, 5);
 
-      // Restore context state
+      // Airplane tail
+      ctx.fillStyle = "#ff4444";
+      ctx.fillRect(10, -8, 8, 16);
+
+      // Airplane nose
+      ctx.fillStyle = "#ff4444";
+      ctx.beginPath();
+      ctx.moveTo(-15, 0);
+      ctx.lineTo(-25, -3);
+      ctx.lineTo(-25, 3);
+      ctx.closePath();
+      ctx.fill();
+
       ctx.restore();
+      ctx.shadowBlur = 0;
     }
 
     // Draw crash effect
     if (isCrashed) {
-      const x = (planePosition.x / 100) * canvas.width;
-      const y = (planePosition.y / 100) * canvas.height;
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
 
       // Explosion effect
-      ctx.fillStyle = "rgba(255, 68, 68, 0.8)";
-      ctx.beginPath();
-      ctx.arc(x, y, 30, 0, 2 * Math.PI);
-      ctx.fill();
+      for (let i = 0; i < 20; i++) {
+        const angle = (i * Math.PI * 2) / 20;
+        const distance = 50 + Math.random() * 30;
+        const x = centerX + Math.cos(angle) * distance;
+        const y = centerY + Math.sin(angle) * distance;
 
-      ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
-      ctx.beginPath();
-      ctx.arc(x, y, 15, 0, 2 * Math.PI);
-      ctx.fill();
+        ctx.fillStyle = `rgba(255, ${68 + Math.random() * 100}, ${68 + Math.random() * 100}, ${0.8 + Math.random() * 0.2})`;
+        ctx.beginPath();
+        ctx.arc(x, y, 3 + Math.random() * 5, 0, Math.PI * 2);
+        ctx.fill();
+      }
     }
-  }, [planePosition, flightPath, isCrashed]);
+  }, [planePosition, flightPath, gamePhase, isCrashed]);
 
   return (
-    <motion.div
-      className="flight-container"
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: 0.3, duration: 0.6 }}
-    >
+    <div className="flight-container">
       <canvas
         ref={canvasRef}
-        width={800}
-        height={400}
         className="flight-canvas"
+        style={{ width: "100%", height: "100%" }}
       />
 
       {/* Multiplier Display */}
       <motion.div
         className="multiplier-display"
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.5, duration: 0.6 }}
+        animate={{
+          scale: gamePhase === "flying" ? [1, 1.1, 1] : 1,
+        }}
+        transition={{
+          duration: 2,
+          repeat: gamePhase === "flying" ? Infinity : 0,
+          ease: "easeInOut",
+        }}
       >
         <span className="multiplier-value">
-          {(currentMultiplier || 0)?.toFixed(2)}x
+          {gamePhase === "betting"
+            ? "WAITING"
+            : (currentMultiplier || 0)?.toFixed(2) + "x"}
         </span>
       </motion.div>
 
       {/* Player Count */}
-      <motion.div
-        className="player-count"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.8 }}
-      >
-        <div className="player-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-          </svg>
-        </div>
+      <div className="player-count">
+        <span className="player-icon">👥</span>
         <span className="player-number">{playerCount.toLocaleString()}</span>
-      </motion.div>
+      </div>
+
+      {/* Betting Phase Message */}
+      {gamePhase === "betting" && (
+        <div className="betting-phase-message">
+          <span className="phase-text">🎲 Place your bets!</span>
+        </div>
+      )}
 
       {/* Crash Message */}
       {isCrashed && (
         <motion.div
           className="crash-message"
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ type: "spring", stiffness: 300 }}
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5, type: "spring" }}
         >
-          CRASHED!
+          💥 CRASHED!
         </motion.div>
       )}
-    </motion.div>
+    </div>
   );
 }

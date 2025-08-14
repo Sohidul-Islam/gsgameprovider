@@ -13,6 +13,9 @@ export interface GameState {
   gameResult: "win" | "loss" | null;
   winMultiplier: number;
   lossMultiplier: number;
+  gamePhase: "betting" | "flying" | "crashed";
+  bettingTimeLeft: number;
+  hasPlacedBet: boolean;
 }
 
 export interface PlanePosition {

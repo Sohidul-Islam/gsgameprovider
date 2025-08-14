@@ -1,9 +1,74 @@
 .betting-panels {
   display: flex;
+  flex-direction: column;
   gap: 20px;
   justify-content: center;
   margin-top: 20px;
   padding: 0 20px;
+}
+
+/* Betting Timer */
+.betting-timer {
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 10px;
+}
+
+.timer-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.timer-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.timer-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #22c55e;
+  text-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+  transition: all 0.3s ease;
+}
+
+.timer-value.urgent {
+  color: #ff4444;
+  text-shadow: 0 0 15px rgba(255, 68, 68, 0.8);
+  animation: pulse 1s infinite;
+}
+
+.timer-progress {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.timer-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  border-radius: 4px;
+  transition: width 1s linear;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+}
+
+/* Betting Panels Container */
+.betting-panels-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
 }
 
 .betting-panel {
@@ -14,6 +79,12 @@
   position: relative;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   border: 1px solid #3a3a3a;
+  transition: all 0.3s ease;
+}
+
+.betting-panel:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
 }
 
 .bet-auto-toggle {
@@ -40,9 +111,14 @@
   color: #fff;
 }
 
-.toggle-btn:hover:not(.active) {
+.toggle-btn:hover:not(.active):not(:disabled) {
   background: #404040;
   color: #ccc;
+}
+
+.toggle-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .bet-amount-control {
@@ -67,6 +143,7 @@
 
 .amount-btn:hover:not(:disabled) {
   background: #4a4a4a;
+  transform: scale(1.05);
 }
 
 .amount-btn:disabled {
@@ -84,11 +161,13 @@
   font-size: 14px;
   text-align: center;
   padding: 0 8px;
+  transition: all 0.2s ease;
 }
 
 .bet-input:focus {
   outline: none;
   border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
 }
 
 .bet-input:disabled {
@@ -118,6 +197,7 @@
 .quick-bet-btn:hover:not(:disabled) {
   background: #4a4a4a;
   color: #fff;
+  transform: scale(1.02);
 }
 
 .quick-bet-btn:disabled {
@@ -141,6 +221,28 @@
   align-items: center;
   justify-content: center;
   gap: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.place-bet-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.place-bet-btn:hover::before {
+  left: 100%;
 }
 
 .place-bet-btn.active:hover {
@@ -165,6 +267,20 @@
 .bet-amount {
   font-size: 12px;
   opacity: 0.9;
+}
+
+.bet-status {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: rgba(34, 197, 94, 0.1);
+  border-radius: 6px;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.status-text {
+  font-size: 12px;
+  color: #22c55e;
+  font-weight: 500;
 }
 
 .history-icon {
@@ -205,6 +321,15 @@
 .cash-out-btn:hover {
   transform: translateY(-3px);
   box-shadow: 0 12px 35px rgba(245, 158, 11, 0.6);
+}
+
+.game-status-message {
+  background: rgba(26, 26, 46, 0.9);
+  border-radius: 12px;
+  padding: 15px 20px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 @keyframes pulse {
@@ -269,13 +394,21 @@
 /* Responsive design */
 @media (max-width: 768px) {
   .betting-panels {
-    flex-direction: column;
-    align-items: center;
+    padding: 0 10px;
   }
 
   .betting-panel {
     width: 100%;
     max-width: 320px;
+  }
+
+  .timer-display {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .timer-value {
+    font-size: 20px;
   }
 
   .cash-out-btn {
