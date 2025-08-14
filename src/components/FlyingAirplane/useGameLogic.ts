@@ -272,32 +272,51 @@ export function useGameLogic() {
 
   // Handle crash
   const handleCrash = () => {
-    if (!gameState.hasPlacedBet) return; // No bet placed, no loss
+    // Always handle crash, even if no bet was placed
+    if (gameState.hasPlacedBet) {
+      // Player had a bet, calculate loss
+      const lossMultiplier = generateRandomMultiplier();
+      const lossAmount = gameState.betAmount * lossMultiplier;
 
-    const lossMultiplier = generateRandomMultiplier();
-    const lossAmount = gameState.betAmount * lossMultiplier;
+      setGameState((prev) => ({
+        ...prev,
+        balance: Math.max(0, prev.balance - lossAmount),
+        gameResult: "loss",
+        lossMultiplier,
+        gamePhase: "crashed",
+        isPlaying: false,
+        gameHistory: [...prev.gameHistory, crashPoint],
+      }));
 
-    setGameState((prev) => ({
-      ...prev,
-      balance: Math.max(0, prev.balance - lossAmount),
-      gameResult: "loss",
-      lossMultiplier,
-      gamePhase: "crashed",
-      isPlaying: false,
-      gameHistory: [...prev.gameHistory, crashPoint],
-    }));
+      setShowResult(true);
+      setGameMessage(
+        `Crashed at ${gameState.currentMultiplier.toFixed(
+          2
+        )}x! Lost ${lossAmount.toFixed(2)} BDT`
+      );
+      showNotificationMessage(
+        `💥 CRASHED! -${lossAmount.toFixed(2)} BDT`,
+        4000
+      );
+    } else {
+      // No bet placed, just show crash message
+      setGameState((prev) => ({
+        ...prev,
+        gameResult: "loss",
+        gamePhase: "crashed",
+        isPlaying: false,
+        gameHistory: [...prev.gameHistory, crashPoint],
+      }));
 
-    setShowResult(true);
-    setGameMessage(
-      `Crashed at ${gameState.currentMultiplier.toFixed(
-        2
-      )}x! Lost ${lossAmount.toFixed(2)} BDT`
-    );
-    showNotificationMessage(`💥 CRASHED! -${lossAmount.toFixed(2)} BDT`, 4000);
+      setShowResult(true);
+      setGameMessage(`Crashed at ${gameState.currentMultiplier.toFixed(2)}x!`);
+      showNotificationMessage("💥 CRASHED! No bet placed", 4000);
+    }
+
     setIsShaking(true);
     setTimeout(() => setIsShaking(false), 500);
 
-    // Auto restart after 3 seconds
+    // Auto restart after 3 seconds (always restart regardless of bet)
     restartTimerRef.current = window.setTimeout(() => {
       startBettingPhase();
     }, 3000);
