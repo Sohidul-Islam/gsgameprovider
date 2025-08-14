@@ -98,6 +98,8 @@ export default function FlightCanvas({
         (flightPath[0].y / 100) * canvas.height
       );
 
+      ctx.stroke();
+
       for (let i = 1; i < flightPath.length; i++) {
         ctx.lineTo(
           (flightPath[i].x / 100) * canvas.width,
@@ -140,9 +142,8 @@ export default function FlightCanvas({
       // Save context state
       ctx.save();
 
-      // Move to airplane position and rotate
+      // Move to airplane position
       ctx.translate(x, y);
-      // ctx.rotate((planePosition.angle * Math.PI) / 180);
 
       // Add glow effect
       ctx.shadowColor = "#ff4444";
@@ -157,30 +158,9 @@ export default function FlightCanvas({
     }
 
     if (isCrashed) {
-      // clear canvas pls
+      // clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
-
-    // // Draw crash effect
-    // if (isCrashed) {
-    //   const centerX = canvas.width / 2;
-    //   const centerY = canvas.height / 2;
-
-    //   // Explosion effect
-    //   for (let i = 0; i < 20; i++) {
-    //     const angle = (i * Math.PI * 2) / 20;
-    //     const distance = 50 + Math.random() * 30;
-    //     const x = centerX + Math.cos(angle) * distance;
-    //     const y = centerY + Math.sin(angle) * distance;
-
-    //     ctx.fillStyle = `rgba(255, ${68 + Math.random() * 100}, ${
-    //       68 + Math.random() * 100
-    //     }, ${0.8 + Math.random() * 0.2})`;
-    //     ctx.beginPath();
-    //     ctx.arc(x, y, 3 + Math.random() * 5, 0, Math.PI * 2);
-    //     ctx.fill();
-    //   }
-    // }
   }, [planePosition, flightPath, gamePhase, isCrashed]);
 
   return (

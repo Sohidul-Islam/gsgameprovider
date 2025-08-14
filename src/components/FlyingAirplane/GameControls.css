@@ -1,6 +1,6 @@
 .betting-panels {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 20px;
   justify-content: center;
   margin-top: 20px;
