@@ -82,7 +82,36 @@ export default function GameControls({
   };
 
   return (
-    <div>
+    <div className="game-controls-container">
+      {/* Cash Out Button - Top Priority */}
+      {gamePhase === "flying" && hasPlacedBet && !isCrashed && (
+        <motion.div
+          className="cash-out-container"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.button
+            className="cash-out-btn"
+            onClick={onCashOut}
+            whileHover={{ scale: 1.05, y: -5 }}
+            whileTap={{ scale: 0.95 }}
+            animate={{
+              boxShadow: [
+                "0 8px 25px rgba(245, 158, 11, 0.4)",
+                "0 12px 35px rgba(245, 158, 11, 0.6)",
+                "0 8px 25px rgba(245, 158, 11, 0.4)",
+              ],
+            }}
+            transition={{
+              boxShadow: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+            }}
+          >
+            💰 Cash Out at {currentMultiplier.toFixed(2)}x
+          </motion.button>
+        </motion.div>
+      )}
+
       {/* Betting Timer */}
       {gamePhase === "betting" && (
         <motion.div
@@ -125,20 +154,25 @@ export default function GameControls({
         </motion.div>
       )}
 
+      {/* Betting Panels in Two Columns */}
       <div className="betting-panels">
         {/* Left Betting Panel */}
         <motion.div
-          className="betting-panel"
+          className="betting-panel left-panel"
           whileHover={{ y: -5 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
+          <div className="panel-header">
+            <h3 className="panel-title">🎯 Manual Bet</h3>
+          </div>
+
           <div className="bet-auto-toggle">
             <button
               className={`toggle-btn ${!isAutoBet ? "active" : ""}`}
               onClick={() => onToggleAutoBet()}
               disabled={gamePhase !== "betting"}
             >
-              🎯 Bet
+              🎯 Manual
             </button>
             <button
               className={`toggle-btn ${isAutoBet ? "active" : ""}`}
@@ -178,7 +212,7 @@ export default function GameControls({
           </div>
 
           <div className="quick-bet-options">
-            {quickBetOptions.map((amount) => (
+            {quickBetOptions.slice(0, 2).map((amount) => (
               <button
                 key={amount}
                 className="quick-bet-btn"
@@ -225,60 +259,19 @@ export default function GameControls({
 
         {/* Right Betting Panel */}
         <motion.div
-          className="betting-panel"
+          className="betting-panel right-panel"
           whileHover={{ y: -5 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
-          <div className="bet-auto-toggle">
-            <button
-              className={`toggle-btn ${!isAutoBet ? "active" : ""}`}
-              onClick={() => onToggleAutoBet()}
-              disabled={gamePhase !== "betting"}
-            >
-              🎯 Bet
-            </button>
-            <button
-              className={`toggle-btn ${isAutoBet ? "active" : ""}`}
-              onClick={() => onToggleAutoBet()}
-              disabled={gamePhase !== "betting"}
-            >
-              🤖 Auto
-            </button>
+          <div className="panel-header">
+            <h3 className="panel-title">⚡ Quick Bet</h3>
           </div>
 
-          <div className="bet-amount-control">
-            <button
-              className="amount-btn decrement"
-              onClick={handleDecrement}
-              disabled={!canBet || gamePhase !== "betting"}
-            >
-              ➖
-            </button>
-            <input
-              type="number"
-              value={betAmount.toFixed(2)}
-              onChange={handleBetAmountChange}
-              className="bet-input"
-              disabled={!canBet || gamePhase !== "betting"}
-              min="1"
-              max={balance}
-            />
-            <button
-              className="amount-btn increment"
-              onClick={handleIncrement}
-              disabled={
-                !canBet || betAmount >= balance || gamePhase !== "betting"
-              }
-            >
-              ➕
-            </button>
-          </div>
-
-          <div className="quick-bet-options">
+          <div className="quick-bet-options large">
             {quickBetOptions.map((amount) => (
               <button
                 key={amount}
-                className="quick-bet-btn"
+                className="quick-bet-btn large"
                 onClick={() => handleQuickBet(amount)}
                 disabled={
                   !canBet || amount > balance || gamePhase !== "betting"
@@ -289,8 +282,13 @@ export default function GameControls({
             ))}
           </div>
 
+          <div className="bet-amount-display">
+            <div className="amount-label">Current Bet:</div>
+            <div className="amount-value">{betAmount.toFixed(2)} BDT</div>
+          </div>
+
           <motion.button
-            className={`place-bet-btn ${
+            className={`place-bet-btn secondary ${
               canBet && gamePhase === "betting" && !hasPlacedBet
                 ? "active"
                 : "disabled"
@@ -325,68 +323,39 @@ export default function GameControls({
             </svg>
           </div>
         </motion.div>
-
-        {/* Cash Out Button */}
-        {gamePhase === "flying" && hasPlacedBet && !isCrashed && (
-          <motion.div
-            className="cash-out-container"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <motion.button
-              className="cash-out-btn"
-              onClick={onCashOut}
-              whileHover={{ scale: 1.05, y: -5 }}
-              whileTap={{ scale: 0.95 }}
-              animate={{
-                boxShadow: [
-                  "0 8px 25px rgba(245, 158, 11, 0.4)",
-                  "0 12px 35px rgba(245, 158, 11, 0.6)",
-                  "0 8px 25px rgba(245, 158, 11, 0.4)",
-                ],
-              }}
-              transition={{
-                boxShadow: { duration: 2, repeat: Infinity, ease: "easeInOut" },
-              }}
-            >
-              💰 Cash Out at {currentMultiplier.toFixed(2)}x
-            </motion.button>
-          </motion.div>
-        )}
-
-        {/* Game Status Message */}
-        {gameMessage && (
-          <motion.div
-            className="game-status-message"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <span className="status-text">{gameMessage}</span>
-          </motion.div>
-        )}
-
-        {/* Game Result */}
-        {showResult && (
-          <motion.div
-            className={`game-result ${gameResult}`}
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          >
-            <div className="result-message">{gameMessage}</div>
-            <motion.button
-              className="continue-btn"
-              onClick={onContinue}
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              🔄 Continue
-            </motion.button>
-          </motion.div>
-        )}
       </div>
+
+      {/* Game Status Message */}
+      {gameMessage && (
+        <motion.div
+          className="game-status-message"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <span className="status-text">{gameMessage}</span>
+        </motion.div>
+      )}
+
+      {/* Game Result */}
+      {showResult && (
+        <motion.div
+          className={`game-result ${gameResult}`}
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        >
+          <div className="result-message">{gameMessage}</div>
+          <motion.button
+            className="continue-btn"
+            onClick={onContinue}
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            🔄 Continue
+          </motion.button>
+        </motion.div>
+      )}
     </div>
   );
 }

@@ -1,44 +1,101 @@
 /* Game Controls Styles */
-.betting-panels {
+.game-controls-container {
   display: flex;
   flex-direction: column;
-  gap: clamp(15px, 3vw, 25px);
+  gap: clamp(12px, 2.5vw, 20px);
   width: 100%;
-  max-width: clamp(320px, 90vw, 600px);
+  max-width: clamp(600px, 98vw, 800px);
   margin: 0 auto;
+  padding: 0 clamp(8px, 2vw, 16px);
+}
+
+/* Cash Out Container - Top Priority */
+.cash-out-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: clamp(8px, 2vw, 12px);
+  order: -1; /* Ensures it appears at the top */
+}
+
+.cash-out-btn {
+  background: linear-gradient(45deg, #f59e0b, #fbbf24);
+  border: none;
+  padding: clamp(14px, 3vw, 20px) clamp(20px, 4vw, 32px);
+  border-radius: 12px;
+  color: white;
+  font-weight: bold;
+  font-size: clamp(0.9rem, 2.8vw, 1.1rem);
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cash-out-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.cash-out-btn:hover::before {
+  left: 100%;
+}
+
+.cash-out-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(245, 158, 11, 0.5);
 }
 
 /* Betting Timer */
 .betting-timer {
-  background: rgba(42, 42, 42, 0.8);
-  padding: clamp(12px, 2.5vw, 20px);
-  border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(42, 42, 42, 0.9);
+  padding: clamp(10px, 2vw, 16px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
   text-align: center;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
+  margin-bottom: clamp(8px, 2vw, 12px);
 }
 
 .timer-display {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(6px, 1.5vw, 10px);
-  margin-bottom: clamp(8px, 2vw, 12px);
+  gap: clamp(4px, 1vw, 6px);
+  margin-bottom: clamp(6px, 1.5vw, 8px);
 }
 
 .timer-label {
-  font-size: clamp(0.8rem, 2.5vw, 1rem);
-  font-weight: 500;
+  font-size: clamp(0.7rem, 2.2vw, 0.9rem);
+  font-weight: 600;
   color: #ffffff;
-  opacity: 0.9;
+  opacity: 0.95;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .timer-value {
-  font-size: clamp(1.2rem, 4vw, 1.8rem);
+  font-size: clamp(1rem, 3.5vw, 1.5rem);
   font-weight: bold;
   color: #22c55e;
-  text-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+  text-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
   transition: all 0.3s ease;
 }
 
@@ -61,55 +118,92 @@
 
 .timer-progress {
   width: 100%;
-  height: clamp(6px, 1.5vw, 8px);
+  height: clamp(4px, 1.2vw, 6px);
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+  border-radius: 3px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .timer-fill {
   height: 100%;
-  border-radius: 4px;
+  border-radius: 3px;
   transition: width 0.3s ease;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+}
+
+/* Betting Panels - Two Column Layout */
+.betting-panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(12px, 2.5vw, 20px);
+  width: 100%;
 }
 
 /* Betting Panel */
 .betting-panel {
-  background: rgba(42, 42, 42, 0.8);
-  padding: clamp(15px, 3vw, 25px);
-  border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(42, 42, 42, 0.9);
+  padding: clamp(12px, 2.5vw, 20px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
   position: relative;
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .betting-panel:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.left-panel {
+  border-left: 3px solid #ff4444;
+}
+
+.right-panel {
+  border-left: 3px solid #22c55e;
+}
+
+/* Panel Header */
+.panel-header {
+  margin-bottom: clamp(10px, 2vw, 16px);
+  text-align: center;
+}
+
+.panel-title {
+  font-size: clamp(0.8rem, 2.5vw, 1rem);
+  font-weight: bold;
+  color: white;
+  margin: 0;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
 }
 
 /* Bet/Auto Toggle */
 .bet-auto-toggle {
   display: flex;
-  gap: clamp(8px, 2vw, 12px);
-  margin-bottom: clamp(12px, 2.5vw, 20px);
+  gap: clamp(6px, 1.5vw, 10px);
+  margin-bottom: clamp(10px, 2vw, 16px);
 }
 
 .toggle-btn {
   flex: 1;
-  padding: clamp(8px, 2vw, 12px) clamp(12px, 3vw, 20px);
+  padding: clamp(10px, 2.2vw, 14px) clamp(8px, 2vw, 12px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.8);
   border-radius: 8px;
   cursor: pointer;
-  font-size: clamp(0.7rem, 2.5vw, 0.9rem);
-  font-weight: 500;
+  font-size: clamp(0.65rem, 2.2vw, 0.8rem);
+  font-weight: 600;
   transition: all 0.3s ease;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .toggle-btn.active {
@@ -121,65 +215,73 @@
 
 .toggle-btn:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .toggle-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  transform: none;
 }
 
 /* Bet Amount Control */
 .bet-amount-control {
   display: flex;
   align-items: center;
-  gap: clamp(8px, 2vw, 12px);
-  margin-bottom: clamp(12px, 2.5vw, 20px);
+  gap: clamp(6px, 1.5vw, 10px);
+  margin-bottom: clamp(10px, 2vw, 16px);
 }
 
 .amount-btn {
-  width: clamp(32px, 8vw, 40px);
-  height: clamp(32px, 8vw, 40px);
+  width: clamp(40px, 10vw, 48px);
+  height: clamp(40px, 10vw, 48px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   color: white;
   border-radius: 8px;
   cursor: pointer;
-  font-size: clamp(1rem, 3vw, 1.2rem);
+  font-size: clamp(1.1rem, 3.5vw, 1.4rem);
   font-weight: bold;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .amount-btn:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
   transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .amount-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  transform: none;
 }
 
 .bet-input {
   flex: 1;
-  padding: clamp(8px, 2vw, 12px);
+  padding: clamp(10px, 2.2vw, 14px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   color: white;
   border-radius: 8px;
-  font-size: clamp(0.8rem, 2.5vw, 1rem);
-  font-weight: 500;
+  font-size: clamp(0.75rem, 2.5vw, 0.9rem);
+  font-weight: 600;
   text-align: center;
   transition: all 0.3s ease;
+  min-height: 44px;
 }
 
 .bet-input:focus {
   outline: none;
   border-color: #ff4444;
   box-shadow: 0 0 8px rgba(255, 68, 68, 0.3);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .bet-input:disabled {
@@ -190,32 +292,72 @@
 /* Quick Bet Options */
 .quick-bet-options {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
   gap: clamp(6px, 1.5vw, 10px);
-  margin-bottom: clamp(12px, 2.5vw, 20px);
+  margin-bottom: clamp(12px, 2.5vw, 18px);
+}
+
+.quick-bet-options.large {
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(8px, 2vw, 12px);
 }
 
 .quick-bet-btn {
-  padding: clamp(6px, 1.5vw, 10px) clamp(8px, 2vw, 12px);
+  padding: clamp(8px, 2vw, 12px) clamp(6px, 1.5vw, 10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   color: white;
   border-radius: 6px;
   cursor: pointer;
-  font-size: clamp(0.6rem, 2vw, 0.8rem);
-  font-weight: 500;
+  font-size: clamp(0.6rem, 2vw, 0.75rem);
+  font-weight: 600;
   transition: all 0.3s ease;
   text-align: center;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quick-bet-btn.large {
+  padding: clamp(10px, 2.5vw, 14px) clamp(8px, 2vw, 12px);
+  font-size: clamp(0.7rem, 2.2vw, 0.85rem);
+  min-height: 44px;
 }
 
 .quick-bet-btn:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
   transform: scale(1.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .quick-bet-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  transform: none;
+}
+
+/* Bet Amount Display */
+.bet-amount-display {
+  background: rgba(255, 255, 255, 0.05);
+  padding: clamp(8px, 2vw, 12px);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: clamp(10px, 2vw, 16px);
+  text-align: center;
+}
+
+.amount-label {
+  font-size: clamp(0.6rem, 2vw, 0.75rem);
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 4px;
+}
+
+.amount-value {
+  font-size: clamp(0.9rem, 2.8vw, 1.1rem);
+  font-weight: bold;
+  color: #22c55e;
+  text-shadow: 0 0 8px rgba(34, 197, 94, 0.3);
 }
 
 /* Place Bet Button */
@@ -230,18 +372,27 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(4px, 1vw, 6px);
-  font-size: clamp(0.8rem, 2.5vw, 1rem);
+  gap: clamp(3px, 1vw, 5px);
+  font-size: clamp(0.75rem, 2.5vw, 0.9rem);
+  min-height: 50px;
+  justify-content: center;
+  margin-top: auto;
+}
+
+.place-bet-btn.secondary {
+  background: linear-gradient(45deg, #22c55e, #16a34a);
+  color: white;
+  box-shadow: 0 3px 12px rgba(34, 197, 94, 0.3);
 }
 
 .place-bet-btn.active {
-  background: linear-gradient(45deg, #22c55e, #16a34a);
+  background: linear-gradient(45deg, #ff4444, #ff6666);
   color: white;
-  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+  box-shadow: 0 3px 12px rgba(255, 68, 68, 0.3);
 }
 
 .place-bet-btn.disabled {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.5);
   cursor: not-allowed;
   opacity: 0.7;
@@ -249,25 +400,29 @@
 
 .place-bet-btn:hover:not(.disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
 .bet-text {
   font-weight: bold;
+  font-size: clamp(0.7rem, 2.2vw, 0.85rem);
 }
 
 .bet-amount {
-  font-size: clamp(0.7rem, 2vw, 0.9rem);
+  font-size: clamp(0.6rem, 1.8vw, 0.75rem);
   opacity: 0.9;
 }
 
 /* History Icon */
 .history-icon {
   position: absolute;
-  top: clamp(10px, 2vw, 15px);
-  right: clamp(10px, 2vw, 15px);
+  top: clamp(8px, 2vw, 12px);
+  right: clamp(8px, 2vw, 12px);
   color: rgba(255, 255, 255, 0.5);
   transition: all 0.3s ease;
+  width: clamp(16px, 4vw, 20px);
+  height: clamp(16px, 4vw, 20px);
+  cursor: pointer;
 }
 
 .history-icon:hover {
@@ -286,60 +441,34 @@
 }
 
 .status-text {
-  font-size: clamp(0.7rem, 2.5vw, 0.9rem);
+  font-size: clamp(0.65rem, 2.2vw, 0.8rem);
   color: #22c55e;
-  font-weight: 500;
-}
-
-/* Cash Out Container */
-.cash-out-container {
-  display: flex;
-  justify-content: center;
-  margin-top: clamp(15px, 3vw, 25px);
-}
-
-.cash-out-btn {
-  background: linear-gradient(45deg, #f59e0b, #fbbf24);
-  border: none;
-  padding: clamp(12px, 2.5vw, 18px) clamp(20px, 4vw, 30px);
-  border-radius: 12px;
-  color: white;
-  font-weight: bold;
-  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-  cursor: pointer;
-  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
-  transition: all 0.3s ease;
-  white-space: nowrap;
-}
-
-.cash-out-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(245, 158, 11, 0.5);
+  font-weight: 600;
 }
 
 /* Game Status Message */
 .game-status-message {
-  margin-top: clamp(15px, 3vw, 25px);
-  padding: clamp(10px, 2.5vw, 15px);
-  background: rgba(255, 255, 255, 0.1);
+  margin-top: clamp(12px, 2.5vw, 20px);
+  padding: clamp(10px, 2.2vw, 14px);
+  background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
+  border-radius: 8px;
   text-align: center;
 }
 
 .status-text {
-  font-size: clamp(0.8rem, 2.5vw, 1rem);
+  font-size: clamp(0.7rem, 2.2vw, 0.85rem);
   color: white;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 /* Game Result */
 .game-result {
-  margin-top: clamp(15px, 3vw, 25px);
-  padding: clamp(15px, 3vw, 25px);
-  border-radius: 15px;
+  margin-top: clamp(12px, 2.5vw, 20px);
+  padding: clamp(12px, 2.5vw, 20px);
+  border-radius: 12px;
   text-align: center;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
   animation: resultAppear 0.5s ease-out;
 }
 
@@ -365,185 +494,482 @@
 }
 
 .result-message {
-  font-size: clamp(1rem, 3vw, 1.3rem);
+  font-size: clamp(0.9rem, 3vw, 1.2rem);
   font-weight: bold;
-  margin-bottom: clamp(15px, 3vw, 20px);
+  margin-bottom: clamp(12px, 2.5vw, 18px);
 }
 
 .continue-btn {
   background: rgba(255, 255, 255, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: clamp(10px, 2.5vw, 15px) clamp(20px, 4vw, 30px);
-  border-radius: 10px;
+  padding: clamp(10px, 2.2vw, 14px) clamp(16px, 3.5vw, 24px);
+  border-radius: 8px;
   color: white;
   font-weight: bold;
-  font-size: clamp(0.8rem, 2.5vw, 1rem);
+  font-size: clamp(0.75rem, 2.2vw, 0.9rem);
   cursor: pointer;
   transition: all 0.3s ease;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .continue-btn:hover {
   background: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
 }
 
-/* Mobile Responsive Design */
-@media (max-width: 480px) {
+/* Mobile Responsive Design - Keep Two Columns but Smaller */
+@media (max-width: 768px) {
+  .game-controls-container {
+    max-width: clamp(500px, 98vw, 600px);
+    gap: clamp(8px, 2vw, 12px);
+  }
+
   .betting-panels {
-    gap: 12px;
+    gap: clamp(8px, 2vw, 12px);
   }
 
   .betting-panel {
-    padding: 12px;
+    padding: clamp(8px, 2vw, 12px);
+    border-radius: 10px;
+  }
+
+  .panel-title {
+    font-size: clamp(0.7rem, 2.2vw, 0.85rem);
+    margin-bottom: clamp(6px, 1.5vw, 8px);
   }
 
   .bet-auto-toggle {
-    gap: 6px;
-    margin-bottom: 12px;
+    gap: clamp(4px, 1vw, 6px);
+    margin-bottom: clamp(8px, 1.5vw, 12px);
   }
 
   .toggle-btn {
-    padding: 8px 12px;
-    font-size: 0.7rem;
+    padding: clamp(8px, 1.8vw, 10px) clamp(6px, 1.5vw, 8px);
+    font-size: clamp(0.6rem, 2vw, 0.7rem);
+    min-height: 36px;
+    border-radius: 6px;
   }
 
   .bet-amount-control {
-    gap: 6px;
-    margin-bottom: 12px;
+    gap: clamp(4px, 1vw, 6px);
+    margin-bottom: clamp(8px, 1.5vw, 12px);
   }
 
   .amount-btn {
-    width: 32px;
-    height: 32px;
-    font-size: 1rem;
+    width: clamp(32px, 8vw, 40px);
+    height: clamp(32px, 8vw, 40px);
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    min-width: 32px;
+    min-height: 32px;
+    border-radius: 6px;
   }
 
   .bet-input {
-    padding: 8px;
-    font-size: 0.8rem;
+    padding: clamp(8px, 1.8vw, 10px);
+    font-size: clamp(0.65rem, 2.2vw, 0.8rem);
+    min-height: 36px;
+    border-radius: 6px;
   }
 
   .quick-bet-options {
     grid-template-columns: repeat(2, 1fr);
-    gap: 6px;
-    margin-bottom: 12px;
+    gap: clamp(4px, 1vw, 6px);
+    margin-bottom: clamp(8px, 1.5vw, 12px);
+  }
+
+  .quick-bet-options.large {
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(4px, 1vw, 6px);
   }
 
   .quick-bet-btn {
-    padding: 6px 8px;
-    font-size: 0.6rem;
+    padding: clamp(6px, 1.5vw, 8px) clamp(4px, 1vw, 6px);
+    font-size: clamp(0.55rem, 1.8vw, 0.65rem);
+    min-height: 32px;
+    border-radius: 5px;
+  }
+
+  .quick-bet-btn.large {
+    padding: clamp(7px, 1.8vw, 9px) clamp(5px, 1.2vw, 7px);
+    font-size: clamp(0.6rem, 2vw, 0.7rem);
+    min-height: 36px;
   }
 
   .place-bet-btn {
-    padding: 12px;
-    font-size: 0.8rem;
+    padding: clamp(10px, 2vw, 12px);
+    font-size: clamp(0.65rem, 2.2vw, 0.8rem);
+    min-height: 40px;
+    border-radius: 8px;
   }
 
   .cash-out-btn {
-    padding: 12px 20px;
-    font-size: 0.9rem;
+    padding: clamp(12px, 2.5vw, 16px) clamp(16px, 3.5vw, 24px);
+    font-size: clamp(0.8rem, 2.5vw, 1rem);
+    min-height: 48px;
+    border-radius: 10px;
+  }
+
+  .bet-amount-display {
+    padding: clamp(6px, 1.5vw, 8px);
+    border-radius: 6px;
+    margin-bottom: clamp(8px, 1.5vw, 12px);
+  }
+
+  .amount-label {
+    font-size: clamp(0.55rem, 1.8vw, 0.65rem);
+  }
+
+  .amount-value {
+    font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+  }
+
+  .timer-display {
+    gap: clamp(3px, 1vw, 4px);
+    margin-bottom: clamp(5px, 1.2vw, 6px);
+  }
+
+  .timer-label {
+    font-size: clamp(0.6rem, 2vw, 0.7rem);
+  }
+
+  .timer-value {
+    font-size: clamp(0.9rem, 3vw, 1.1rem);
+  }
+
+  .timer-progress {
+    height: clamp(3px, 1vw, 4px);
+  }
+}
+
+@media (max-width: 480px) {
+  .game-controls-container {
+    gap: clamp(6px, 1.5vw, 10px);
+    padding: 0 clamp(4px, 1.5vw, 8px);
+  }
+
+  .betting-panels {
+    gap: clamp(6px, 1.5vw, 8px);
+  }
+
+  .betting-panel {
+    padding: clamp(6px, 1.5vw, 10px);
+    border-radius: 8px;
+  }
+
+  .panel-title {
+    font-size: clamp(0.65rem, 2vw, 0.75rem);
+    margin-bottom: clamp(4px, 1vw, 6px);
+  }
+
+  .bet-auto-toggle {
+    gap: clamp(3px, 0.8vw, 4px);
+    margin-bottom: clamp(6px, 1.2vw, 8px);
+  }
+
+  .toggle-btn {
+    padding: clamp(6px, 1.5vw, 8px) clamp(4px, 1vw, 6px);
+    font-size: clamp(0.55rem, 1.8vw, 0.65rem);
+    min-height: 32px;
+    border-radius: 5px;
+  }
+
+  .bet-amount-control {
+    gap: clamp(3px, 0.8vw, 4px);
+    margin-bottom: clamp(6px, 1.2vw, 8px);
+  }
+
+  .amount-btn {
+    width: clamp(28px, 7vw, 36px);
+    height: clamp(28px, 7vw, 36px);
+    font-size: clamp(0.9rem, 2.8vw, 1.1rem);
+    min-width: 28px;
+    min-height: 28px;
+    border-radius: 5px;
+  }
+
+  .bet-input {
+    padding: clamp(6px, 1.5vw, 8px);
+    font-size: clamp(0.6rem, 2vw, 0.7rem);
+    min-height: 32px;
+    border-radius: 5px;
+  }
+
+  .quick-bet-options {
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(3px, 0.8vw, 4px);
+    margin-bottom: clamp(6px, 1.2vw, 8px);
+  }
+
+  .quick-bet-options.large {
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(3px, 0.8vw, 4px);
+  }
+
+  .quick-bet-btn {
+    padding: clamp(4px, 1.2vw, 6px) clamp(3px, 0.8vw, 4px);
+    font-size: clamp(0.5rem, 1.6vw, 0.6rem);
+    min-height: 28px;
+    border-radius: 4px;
+  }
+
+  .quick-bet-btn.large {
+    padding: clamp(5px, 1.5vw, 7px) clamp(4px, 1vw, 5px);
+    font-size: clamp(0.55rem, 1.8vw, 0.65rem);
+    min-height: 32px;
+  }
+
+  .place-bet-btn {
+    padding: clamp(8px, 1.8vw, 10px);
+    font-size: clamp(0.6rem, 2vw, 0.7rem);
+    min-height: 36px;
+    border-radius: 6px;
+  }
+
+  .cash-out-btn {
+    padding: clamp(10px, 2.2vw, 14px) clamp(14px, 3vw, 20px);
+    font-size: clamp(0.75rem, 2.2vw, 0.9rem);
+    min-height: 44px;
+    border-radius: 8px;
+  }
+
+  .bet-amount-display {
+    padding: clamp(4px, 1.2vw, 6px);
+    border-radius: 5px;
+    margin-bottom: clamp(6px, 1.2vw, 8px);
+  }
+
+  .amount-label {
+    font-size: clamp(0.5rem, 1.6vw, 0.6rem);
+  }
+
+  .amount-value {
+    font-size: clamp(0.7rem, 2.2vw, 0.85rem);
+  }
+
+  .timer-display {
+    gap: clamp(2px, 0.8vw, 3px);
+    margin-bottom: clamp(4px, 1vw, 5px);
+  }
+
+  .timer-label {
+    font-size: clamp(0.55rem, 1.8vw, 0.65rem);
+  }
+
+  .timer-value {
+    font-size: clamp(0.8rem, 2.8vw, 1rem);
+  }
+
+  .timer-progress {
+    height: clamp(2px, 0.8vw, 3px);
+  }
+
+  .bet-status {
+    padding: clamp(6px, 1.2vw, 8px);
+    border-radius: 6px;
+  }
+
+  .status-text {
+    font-size: clamp(0.55rem, 1.8vw, 0.65rem);
+  }
+
+  .game-status-message {
+    padding: clamp(8px, 1.5vw, 10px);
+    border-radius: 6px;
   }
 
   .game-result {
-    padding: 15px;
+    padding: clamp(10px, 2vw, 12px);
+    border-radius: 8px;
   }
 
   .result-message {
-    font-size: 1rem;
-    margin-bottom: 15px;
+    font-size: clamp(0.8rem, 2.5vw, 1rem);
+    margin-bottom: clamp(10px, 2vw, 12px);
   }
 
   .continue-btn {
-    padding: 10px 20px;
-    font-size: 0.8rem;
+    padding: clamp(8px, 1.8vw, 10px) clamp(12px, 2.5vw, 16px);
+    font-size: clamp(0.6rem, 2vw, 0.7rem);
+    min-height: 36px;
+    border-radius: 6px;
   }
 }
 
 @media (max-width: 360px) {
+  .game-controls-container {
+    gap: clamp(4px, 1.2vw, 6px);
+    padding: 0 clamp(3px, 1vw, 6px);
+  }
+
   .betting-panels {
-    gap: 8px;
+    gap: clamp(4px, 1.2vw, 6px);
   }
 
   .betting-panel {
-    padding: 8px;
+    padding: clamp(4px, 1.2vw, 8px);
+    border-radius: 6px;
+  }
+
+  .panel-title {
+    font-size: clamp(0.6rem, 1.8vw, 0.7rem);
+    margin-bottom: clamp(3px, 0.8vw, 4px);
   }
 
   .bet-auto-toggle {
-    gap: 4px;
-    margin-bottom: 8px;
+    gap: clamp(2px, 0.6vw, 3px);
+    margin-bottom: clamp(4px, 1vw, 6px);
   }
 
   .toggle-btn {
-    padding: 6px 8px;
-    font-size: 0.6rem;
+    padding: clamp(4px, 1.2vw, 6px) clamp(3px, 0.8vw, 4px);
+    font-size: clamp(0.5rem, 1.6vw, 0.6rem);
+    min-height: 28px;
+    border-radius: 4px;
   }
 
   .bet-amount-control {
-    gap: 4px;
-    margin-bottom: 8px;
+    gap: clamp(2px, 0.6vw, 3px);
+    margin-bottom: clamp(4px, 1vw, 6px);
   }
 
   .amount-btn {
-    width: 28px;
-    height: 28px;
-    font-size: 0.9rem;
+    width: clamp(24px, 6vw, 32px);
+    height: clamp(24px, 6vw, 32px);
+    font-size: clamp(0.8rem, 2.5vw, 1rem);
+    min-width: 24px;
+    min-height: 24px;
+    border-radius: 4px;
   }
 
   .bet-input {
-    padding: 6px;
-    font-size: 0.7rem;
+    padding: clamp(4px, 1.2vw, 6px);
+    font-size: clamp(0.55rem, 1.8vw, 0.65rem);
+    min-height: 28px;
+    border-radius: 4px;
   }
 
   .quick-bet-options {
     grid-template-columns: repeat(2, 1fr);
-    gap: 4px;
-    margin-bottom: 8px;
+    gap: clamp(2px, 0.6vw, 3px);
+    margin-bottom: clamp(4px, 1vw, 6px);
+  }
+
+  .quick-bet-options.large {
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(2px, 0.6vw, 3px);
   }
 
   .quick-bet-btn {
-    padding: 4px 6px;
-    font-size: 0.5rem;
+    padding: clamp(3px, 1vw, 4px) clamp(2px, 0.6vw, 3px);
+    font-size: clamp(0.45rem, 1.4vw, 0.55rem);
+    min-height: 24px;
+    border-radius: 3px;
+  }
+
+  .quick-bet-btn.large {
+    padding: clamp(4px, 1.2vw, 5px) clamp(3px, 0.8vw, 4px);
+    font-size: clamp(0.5rem, 1.6vw, 0.6rem);
+    min-height: 28px;
   }
 
   .place-bet-btn {
-    padding: 8px;
-    font-size: 0.7rem;
+    padding: clamp(6px, 1.5vw, 8px);
+    font-size: clamp(0.55rem, 1.8vw, 0.65rem);
+    min-height: 32px;
+    border-radius: 5px;
   }
 
   .cash-out-btn {
-    padding: 8px 16px;
-    font-size: 0.8rem;
+    padding: clamp(8px, 2vw, 12px) clamp(12px, 2.5vw, 18px);
+    font-size: clamp(0.7rem, 2vw, 0.85rem);
+    min-height: 40px;
+    border-radius: 6px;
   }
 
-  .game-result {
-    padding: 12px;
+  .bet-amount-display {
+    padding: clamp(3px, 1vw, 4px);
+    border-radius: 4px;
+    margin-bottom: clamp(4px, 1vw, 6px);
   }
 
-  .result-message {
-    font-size: 0.9rem;
-    margin-bottom: 12px;
+  .amount-label {
+    font-size: clamp(0.45rem, 1.4vw, 0.55rem);
   }
 
-  .continue-btn {
-    padding: 8px 16px;
-    font-size: 0.7rem;
+  .amount-value {
+    font-size: clamp(0.65rem, 2vw, 0.8rem);
   }
 
   .timer-display {
-    gap: 4px;
-    margin-bottom: 8px;
+    gap: clamp(1px, 0.5vw, 2px);
+    margin-bottom: clamp(3px, 0.8vw, 4px);
   }
 
   .timer-label {
-    font-size: 0.7rem;
+    font-size: clamp(0.5rem, 1.6vw, 0.6rem);
   }
 
   .timer-value {
-    font-size: 1.2rem;
+    font-size: clamp(0.75rem, 2.5vw, 0.9rem);
   }
 
   .timer-progress {
-    height: 4px;
+    height: clamp(1px, 0.5vw, 2px);
+  }
+
+  .bet-status {
+    padding: clamp(4px, 1vw, 6px);
+    border-radius: 4px;
+  }
+
+  .status-text {
+    font-size: clamp(0.5rem, 1.6vw, 0.6rem);
+  }
+
+  .game-status-message {
+    padding: clamp(6px, 1.2vw, 8px);
+    border-radius: 4px;
+  }
+
+  .game-result {
+    padding: clamp(8px, 1.5vw, 10px);
+    border-radius: 6px;
+  }
+
+  .result-message {
+    font-size: clamp(0.75rem, 2.2vw, 0.9rem);
+    margin-bottom: clamp(8px, 1.5vw, 10px);
+  }
+
+  .continue-btn {
+    padding: clamp(6px, 1.5vw, 8px) clamp(10px, 2vw, 14px);
+    font-size: clamp(0.55rem, 1.8vw, 0.65rem);
+    min-height: 32px;
+    border-radius: 4px;
+  }
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+  .toggle-btn:hover,
+  .amount-btn:hover,
+  .quick-bet-btn:hover,
+  .place-bet-btn:hover,
+  .cash-out-btn:hover,
+  .continue-btn:hover {
+    transform: none;
+  }
+
+  .toggle-btn:active,
+  .amount-btn:active,
+  .quick-bet-btn:active,
+  .place-bet-btn:active,
+  .cash-out-btn:active,
+  .continue-btn:active {
+    transform: scale(0.95);
   }
 }
