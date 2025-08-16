@@ -20,7 +20,7 @@ export default function GameHeader({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2, duration: 0.6 }}
     >
-      <div className="score-info">
+      <div className="score-info flex flex-wrap gap-4">
         <motion.div
           className="score-item balance-item"
           whileHover={{ scale: 1.05, y: -2 }}
