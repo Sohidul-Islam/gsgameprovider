@@ -1,7 +1,22 @@
 import { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import type { GameState, PlanePosition } from "./types";
 
+// API configuration
+const BASE_URL = "https://glorypos.com/gs-server";
+const api = axios.create({
+  baseURL: BASE_URL,
+  timeout: 10000,
+});
+
 export function useGameLogic() {
+  // Get URL parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const sessionId = urlParams.get("sessionId");
+  const token = urlParams.get("token");
+
+  console.log({ sessionId, token });
+
   const [gameState, setGameState] = useState<GameState>({
     score: 0,
     isPlaying: false,
@@ -21,6 +36,11 @@ export function useGameLogic() {
     bettingTimeLeft: 10, // Changed from 30 to 10 seconds
     hasPlacedBet: false,
   });
+
+  // API state
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
+  const [isVerified, setIsVerified] = useState(false);
 
   const [planePosition, setPlanePosition] = useState<PlanePosition>({
     x: 0,
@@ -43,6 +63,94 @@ export function useGameLogic() {
   const startTimeRef = useRef<number>(0);
   const bettingTimerRef = useRef<number | null>(null);
   const restartTimerRef = useRef<number | null>(null);
+
+  // API Functions
+  const verifyToken = async () => {
+    if (!token) {
+      setApiError("No token provided");
+      return null;
+    }
+
+    try {
+      setIsLoading(true);
+      setApiError(null);
+
+      const response = await api.get(`/api/games/verify/${token}`);
+
+      if (response.data.success) {
+        const { currentBalance, userName, betAmount } = response.data.data;
+
+        // Update game state with user data
+        setGameState((prev) => ({
+          ...prev,
+          balance: currentBalance,
+          betAmount: betAmount || 10,
+        }));
+
+        showNotificationMessage(`Welcome back, ${userName}!`, 3000);
+        setIsVerified(true);
+        return response.data.data;
+      } else {
+        setApiError(response.data.message || "Token verification failed");
+        return null;
+      }
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : (error as { response?: { data?: { message?: string } } })?.response
+              ?.data?.message || "Token verification failed";
+      setApiError(errorMessage);
+      showNotificationMessage(`Error: ${errorMessage}`, 4000);
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const sendBetResult = async (
+    betStatus: "win" | "loss",
+    winAmount: number,
+    lossAmount: number,
+    multiplier: number
+  ) => {
+    if (!token || !sessionId) {
+      setApiError("Missing token or session ID");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      setApiError(null);
+
+      const payload = {
+        sessionToken: token,
+        betStatus,
+        winAmount,
+        lossAmount,
+        gameSessionId: sessionId,
+        multiplier,
+      };
+
+      const response = await api.post("/api/games/bet-result", payload);
+
+      if (response.data.success) {
+        console.log("Bet result sent successfully:", response.data);
+      } else {
+        setApiError(response.data.message || "Failed to send bet result");
+      }
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : (error as { response?: { data?: { message?: string } } })?.response
+              ?.data?.message || "Failed to send bet result";
+      setApiError(errorMessage);
+      console.error("Error sending bet result:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Show notification with auto-hide
   const showNotificationMessage = (
@@ -200,14 +308,52 @@ export function useGameLogic() {
   };
 
   // Start new game
-  const startGame = () => {
+  const startGame = async () => {
+    // Check if token is provided
+    if (!token) {
+      showNotificationMessage(
+        "❌ No token provided. Please provide a valid session token to play.",
+        5000
+      );
+      setApiError(
+        "No token provided. Please provide a valid session token to play."
+      );
+      return;
+    }
+
     setShowStartScreen(false);
-    showNotificationMessage("🎮 Welcome to Crash Game! Good luck!", 3000);
+    showNotificationMessage("🔐 Verifying your session...", 2000);
+
+    // Verify token - mandatory
+    const userData = await verifyToken();
+    if (!userData) {
+      showNotificationMessage(
+        "❌ Session verification failed. Please refresh the page with a valid token.",
+        5000
+      );
+      setShowStartScreen(true); // Return to start screen
+      return;
+    }
+
+    showNotificationMessage(
+      "✅ Session verified! Welcome to Crash Game!",
+      3000
+    );
+    setIsVerified(true);
     startBettingPhase();
   };
 
   // Place bet
   const placeBet = () => {
+    // Check if token is verified (user has started the game)
+    if (!token) {
+      showNotificationMessage(
+        "❌ No token provided. Please provide a valid session token to play.",
+        3000
+      );
+      return;
+    }
+
     if (
       !canBet ||
       gameState.balance < gameState.betAmount ||
@@ -229,7 +375,16 @@ export function useGameLogic() {
   };
 
   // Cash out
-  const cashOut = () => {
+  const cashOut = async () => {
+    // Check if token is verified
+    if (!token) {
+      showNotificationMessage(
+        "❌ No token provided. Please provide a valid session token to play.",
+        3000
+      );
+      return;
+    }
+
     if (
       gameState.gamePhase !== "flying" ||
       !gameState.hasPlacedBet ||
@@ -263,6 +418,9 @@ export function useGameLogic() {
     setIsShaking(true);
     setTimeout(() => setIsShaking(false), 500);
 
+    // Send bet result to API
+    await sendBetResult("win", winAmount, 0, gameState.currentMultiplier);
+
     // Auto restart after 3 seconds
     restartTimerRef.current = window.setTimeout(() => {
       startBettingPhase();
@@ -270,7 +428,16 @@ export function useGameLogic() {
   };
 
   // Handle crash
-  const handleCrash = () => {
+  const handleCrash = async () => {
+    // Check if token is verified
+    if (!token) {
+      showNotificationMessage(
+        "❌ No token provided. Please provide a valid session token to play.",
+        3000
+      );
+      return;
+    }
+
     // Always handle crash, even if no bet was placed
     if (gameState.hasPlacedBet) {
       // Player had a bet, calculate loss
@@ -297,6 +464,9 @@ export function useGameLogic() {
         `💥 CRASHED! -${lossAmount.toFixed(2)} BDT`,
         4000
       );
+
+      // Send bet result to API
+      await sendBetResult("loss", 0, lossAmount, gameState.currentMultiplier);
     } else {
       // No bet placed, just show crash message
       setGameState((prev) => ({
@@ -414,6 +584,8 @@ export function useGameLogic() {
     gameState.hasPlacedBet,
   ]);
 
+  // No auto-verification - token must be verified manually through start button
+
   // Cleanup timers on unmount
   useEffect(() => {
     return () => {
@@ -438,6 +610,9 @@ export function useGameLogic() {
     isCrashed,
     showNotification,
     isShaking,
+    isLoading,
+    apiError,
+    isVerified,
     startGame,
     placeBet,
     cashOut,
