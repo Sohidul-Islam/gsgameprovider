@@ -225,6 +225,11 @@ export function useGameLogic() {
     // Clamp time to crash time so last position is preserved at crash
     const clampedElapsed = Math.min(elapsedSeconds, crashTime);
 
+    const probabilityOfCrash = Math.random();
+    if (probabilityOfCrash < 0.01) {
+      setIsCrashed(true);
+    }
+
     // Flag crash once we reach crash time
     if (elapsedSeconds >= crashTime) {
       setIsCrashed(true);
@@ -392,14 +397,14 @@ export function useGameLogic() {
     )
       return;
 
-    const winMultiplier = generateRandomMultiplier();
-    const winAmount = gameState.betAmount * winMultiplier;
+    // const winMultiplier = generateRandomMultiplier();
+    const winAmount = gameState.betAmount * gameState.currentMultiplier;
 
     setGameState((prev) => ({
       ...prev,
       balance: prev.balance + winAmount,
       gameResult: "win",
-      winMultiplier,
+      winMultiplier: gameState.currentMultiplier,
       gamePhase: "crashed",
       isPlaying: false,
       gameHistory: [...prev.gameHistory, gameState.currentMultiplier],
@@ -442,7 +447,7 @@ export function useGameLogic() {
     if (gameState.hasPlacedBet) {
       // Player had a bet, calculate loss
       const lossMultiplier = generateRandomMultiplier();
-      const lossAmount = gameState.betAmount * lossMultiplier;
+      const lossAmount = gameState.betAmount;
 
       setGameState((prev) => ({
         ...prev,
