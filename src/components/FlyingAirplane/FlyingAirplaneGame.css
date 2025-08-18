@@ -187,32 +187,34 @@
 
 /* Game Header */
 .game-header {
-  margin-bottom: clamp(15px, 3vw, 35px);
+  margin-bottom: clamp(6px, 1.5vw, 10px);
 }
 
 .score-info {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: clamp(8px, 2vw, 20px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(4px, 1vw, 8px);
   width: 100%;
+  justify-content: center;
 }
 
 .score-item {
-  background: rgba(42, 42, 42, 0.9);
-  padding: clamp(12px, 2.5vw, 20px);
-  border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
+  background: rgba(42, 42, 42, 0.8);
+  padding: clamp(4px, 1vw, 6px) clamp(8px, 1.5vw, 12px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
-  min-height: 80px;
+  min-height: 28px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   text-align: center;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  gap: clamp(4px, 1vw, 6px);
 }
 
 .score-item::before {
@@ -237,52 +239,51 @@
 }
 
 .score-item:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 /* Item Icons */
 .item-icon {
-  font-size: clamp(1.2rem, 3vw, 1.8rem);
-  margin-bottom: clamp(4px, 1vw, 8px);
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  font-size: clamp(0.8rem, 2vw, 1.1rem);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
 }
 
 /* Item Content */
 .item-content {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: clamp(2px, 0.5vw, 4px);
-  width: 100%;
+  align-items: flex-start;
+  gap: 0;
+  min-width: 0;
 }
 
 .label {
   display: block;
-  font-size: clamp(0.7rem, 2vw, 0.9rem);
-  opacity: 0.8;
+  font-size: clamp(0.45rem, 1.2vw, 0.6rem);
+  opacity: 0.7;
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: clamp(2px, 0.5vw, 4px);
+  letter-spacing: 0.2px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 0.9;
 }
 
 .value {
   display: block;
-  font-size: clamp(1rem, 2.8vw, 1.4rem);
+  font-size: clamp(0.7rem, 1.8vw, 0.9rem);
   font-weight: bold;
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
-  line-height: 1.2;
+  line-height: 1;
 }
 
 .currency {
-  font-size: clamp(0.6rem, 1.5vw, 0.8rem);
-  opacity: 0.7;
+  font-size: clamp(0.4rem, 1vw, 0.55rem);
+  opacity: 0.6;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.8);
-  margin-top: clamp(1px, 0.3vw, 2px);
+  color: rgba(255, 255, 255, 0.7);
+  margin-left: 1px;
 }
 
 /* Specific Item Styles */
@@ -297,69 +298,69 @@
 
 .balance-item:hover {
   border-color: #22c55e;
-  box-shadow: 0 8px 25px rgba(34, 197, 94, 0.2);
+  box-shadow: 0 2px 6px rgba(34, 197, 94, 0.15);
 }
 
 .balance-value {
   color: #22c55e;
-  text-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+  text-shadow: 0 0 4px rgba(34, 197, 94, 0.3);
 }
 
 .bet-item {
-  border-left: 3px solid #f59e0b;
+  border-left: 2px solid #f59e0b;
   background: linear-gradient(
     135deg,
-    rgba(42, 42, 42, 0.9),
-    rgba(245, 158, 11, 0.1)
+    rgba(42, 42, 42, 0.8),
+    rgba(245, 158, 11, 0.08)
   );
 }
 
 .bet-item:hover {
   border-color: #f59e0b;
-  box-shadow: 0 8px 25px rgba(245, 158, 11, 0.2);
+  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.15);
 }
 
 .bet-value {
   color: #f59e0b;
-  text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+  text-shadow: 0 0 4px rgba(245, 158, 11, 0.3);
 }
 
 .multiplier-item {
-  border-left: 3px solid #ff4444;
+  border-left: 2px solid #ff4444;
   background: linear-gradient(
     135deg,
-    rgba(42, 42, 42, 0.9),
-    rgba(255, 68, 68, 0.1)
+    rgba(42, 42, 42, 0.8),
+    rgba(255, 68, 68, 0.08)
   );
 }
 
 .multiplier-item:hover {
   border-color: #ff4444;
-  box-shadow: 0 8px 25px rgba(255, 68, 68, 0.2);
+  box-shadow: 0 2px 6px rgba(255, 68, 68, 0.15);
 }
 
 .multiplier-value {
   color: #ff4444;
-  text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+  text-shadow: 0 0 4px rgba(255, 68, 68, 0.3);
 }
 
 .players-item {
-  border-left: 3px solid #4a90e2;
+  border-left: 2px solid #4a90e2;
   background: linear-gradient(
     135deg,
-    rgba(42, 42, 42, 0.9),
-    rgba(74, 144, 226, 0.1)
+    rgba(42, 42, 42, 0.8),
+    rgba(74, 144, 226, 0.08)
   );
 }
 
 .players-item:hover {
   border-color: #4a90e2;
-  box-shadow: 0 8px 25px rgba(74, 144, 226, 0.2);
+  box-shadow: 0 2px 6px rgba(74, 144, 226, 0.15);
 }
 
 .players-value {
   color: #4a90e2;
-  text-shadow: 0 0 10px rgba(74, 144, 226, 0.5);
+  text-shadow: 0 0 4px rgba(74, 144, 226, 0.3);
 }
 
 /* Game Area */
