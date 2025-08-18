@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 
+import airplaneImage from "../../assets/aroplan.png";
+
 interface StartScreenProps {
   onStartGame: () => void;
 }
@@ -22,6 +24,12 @@ export default function StartScreen({ onStartGame }: StartScreenProps) {
       >
         <motion.h1
           className="game-title"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 10,
+          }}
           animate={{
             scale: [1, 1.05, 1],
             rotate: [0, 2, -2, 0],
@@ -32,7 +40,15 @@ export default function StartScreen({ onStartGame }: StartScreenProps) {
             ease: "easeInOut",
           }}
         >
-          🚀 Crash Game
+          <img
+            src={airplaneImage}
+            style={{
+              width: 100,
+              height: 100,
+            }}
+            alt="Aero Crash"
+          />{" "}
+          Aero Crash
         </motion.h1>
         <motion.p
           className="game-description"

@@ -121,13 +121,7 @@ export default function GameControls({
           transition={{ duration: 0.5 }}
         >
           <div className="timer-display">
-            <span className="timer-label">⏰ Betting Time</span>
-            <span
-              className={`timer-value ${bettingTimeLeft <= 5 ? "urgent" : ""}`}
-              style={{ color: getTimerColor() }}
-            >
-              {formatTime(bettingTimeLeft)}
-            </span>
+            <span className="timer-label">Start</span>
           </div>
           <div className="timer-progress">
             <div
@@ -138,6 +132,12 @@ export default function GameControls({
               }}
             />
           </div>
+          <span
+            className={`timer-value ${bettingTimeLeft <= 5 ? "urgent" : ""}`}
+            style={{ color: getTimerColor() }}
+          >
+            {formatTime(bettingTimeLeft)}
+          </span>
         </motion.div>
       )}
 
