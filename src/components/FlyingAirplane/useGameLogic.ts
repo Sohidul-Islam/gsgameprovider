@@ -451,7 +451,7 @@ export function useGameLogic() {
 
       setGameState((prev) => ({
         ...prev,
-        balance: Math.max(0, prev.balance - lossAmount),
+        balance: Math.max(0, prev.balance),
         gameResult: "loss",
         lossMultiplier,
         gamePhase: "crashed",
