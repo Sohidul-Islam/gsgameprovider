@@ -112,7 +112,8 @@ export function useGameLogic() {
     betStatus: "win" | "loss",
     winAmount: number,
     lossAmount: number,
-    multiplier: number
+    multiplier: number,
+    betAmount: number
   ) => {
     if (!token || !sessionId) {
       setApiError("Missing token or session ID");
@@ -130,6 +131,7 @@ export function useGameLogic() {
         lossAmount,
         gameSessionId: sessionId,
         multiplier,
+        betAmount,
       };
 
       const response = await api.post("/api/games/bet-result", payload);
@@ -424,7 +426,13 @@ export function useGameLogic() {
     setTimeout(() => setIsShaking(false), 500);
 
     // Send bet result to API
-    await sendBetResult("win", winAmount, 0, gameState.currentMultiplier);
+    await sendBetResult(
+      "win",
+      winAmount,
+      0,
+      gameState.currentMultiplier,
+      gameState.betAmount
+    );
 
     // Auto restart after 3 seconds
     restartTimerRef.current = window.setTimeout(() => {
@@ -471,7 +479,13 @@ export function useGameLogic() {
       );
 
       // Send bet result to API
-      await sendBetResult("loss", 0, lossAmount, gameState.currentMultiplier);
+      await sendBetResult(
+        "loss",
+        0,
+        lossAmount,
+        gameState.currentMultiplier,
+        gameState.betAmount
+      );
     } else {
       // No bet placed, just show crash message
       setGameState((prev) => ({
