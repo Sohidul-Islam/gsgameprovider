@@ -429,7 +429,7 @@ export function useGameLogic() {
     // Send bet result to API
     await sendBetResult(
       "win",
-      winAmount: winAmount-gameState.betAmount,
+      winAmount-gameState.betAmount,
       0,
       gameState.currentMultiplier,
       gameState.betAmount
