@@ -429,7 +429,7 @@ export function useGameLogic() {
     // Send bet result to API
     await sendBetResult(
       "win",
-      winAmount,
+      winAmount: winAmount-gameState.betAmount,
       0,
       gameState.currentMultiplier,
       gameState.betAmount
@@ -438,7 +438,7 @@ export function useGameLogic() {
     // Auto restart after 3 seconds
     restartTimerRef.current = window.setTimeout(() => {
       startBettingPhase();
-    }, 3000);
+    }, 5000);
   };
 
   // Handle crash
