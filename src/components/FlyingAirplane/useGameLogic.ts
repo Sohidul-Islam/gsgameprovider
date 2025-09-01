@@ -228,6 +228,9 @@ export function useGameLogic() {
     // Clamp time to crash time so last position is preserved at crash
     const clampedElapsed = Math.min(elapsedSeconds, crashTime);
 
+    // Calculate current multiplier with slower growth
+    const currentMultiplier = Math.pow(Math.E, clampedElapsed / 4); // Slower growth (divided by 4 instead of 2)
+
     const probabilityOfCrash = Math.random();
     if (probabilityOfCrash < 0.01 && currentMultiplier>=3 && currentMultiplier=<300) {
       setIsCrashed(true);
@@ -238,8 +241,7 @@ export function useGameLogic() {
       setIsCrashed(true);
     }
 
-    // Calculate current multiplier with slower growth
-    const currentMultiplier = Math.pow(Math.E, clampedElapsed / 4); // Slower growth (divided by 4 instead of 2)
+
     setGameState((prev) => ({ ...prev, currentMultiplier }));
 
     // Calculate position based on progress
