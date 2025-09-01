@@ -229,7 +229,7 @@ export function useGameLogic() {
     const clampedElapsed = Math.min(elapsedSeconds, crashTime);
 
     const probabilityOfCrash = Math.random();
-    if (probabilityOfCrash < 0.01) {
+    if (probabilityOfCrash < 0.01 && currentMultiplier>=3 && currentMultiplier=<300) {
       setIsCrashed(true);
     }
 
