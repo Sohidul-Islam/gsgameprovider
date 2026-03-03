@@ -232,14 +232,14 @@ export function useGameLogic() {
     const currentMultiplier = Math.pow(Math.E, clampedElapsed / 4); // Slower growth (divided by 4 instead of 2)
 
     const probabilityOfCrash = Math.random();
-    // if (probabilityOfCrash < 0.01 && currentMultiplier >= 10 && currentMultiplier <= 300) {
-    //   setIsCrashed(true);
-    //   }
-
-
-      if (probabilityOfCrash < 0.01) {
+    
+    if (probabilityOfCrash < 0.01 && currentMultiplier >= 10 && currentMultiplier <= 300) {
       setIsCrashed(true);
       }
+
+      // if (probabilityOfCrash < 0.01) {
+      // setIsCrashed(true);
+      // }
 
 
     // Flag crash once we reach crash time
