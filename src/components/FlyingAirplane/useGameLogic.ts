@@ -4,7 +4,8 @@ import type { GameState, PlanePosition } from "./types";
 
 // API configuration
 // const BASE_URL = "http://localhost:3000";
-const BASE_URL = "https://api.trueeit.com";
+const BASE_URL = "api-staging1615.trueeit.com";
+// const BASE_URL = "";
 const api = axios.create({
   baseURL: BASE_URL,
   timeout: 10000,
