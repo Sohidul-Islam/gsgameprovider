@@ -3,7 +3,10 @@ import axios from "axios";
 import type { GameState, PlanePosition } from "./types";
 
 // API configuration
-const BASE_URL = "http://localhost:3000";
+// const BASE_URL = "http://localhost:3000";
+const BASE_URL = "https://api.49goal.com";
+// const BASE_URL = "https://api-staging1615.trueeit.com";
+// const BASE_URL = "";
 // const BASE_URL = "https://glorypos.com/gs-server";
 const api = axios.create({
   baseURL: BASE_URL,
@@ -228,18 +231,26 @@ export function useGameLogic() {
     // Clamp time to crash time so last position is preserved at crash
     const clampedElapsed = Math.min(elapsedSeconds, crashTime);
 
+    // Calculate current multiplier with slower growth
+    const currentMultiplier = Math.pow(Math.E, clampedElapsed / 4); // Slower growth (divided by 4 instead of 2)
+
     const probabilityOfCrash = Math.random();
-    if (probabilityOfCrash < 0.01) {
+    
+    if (probabilityOfCrash < 0.01 && currentMultiplier >= 10 && currentMultiplier <= 300) {
       setIsCrashed(true);
-    }
+      }
+
+      // if (probabilityOfCrash < 0.01) {
+      // setIsCrashed(true);
+      // }
+
 
     // Flag crash once we reach crash time
     if (elapsedSeconds >= crashTime) {
       setIsCrashed(true);
     }
 
-    // Calculate current multiplier with slower growth
-    const currentMultiplier = Math.pow(Math.E, clampedElapsed / 4); // Slower growth (divided by 4 instead of 2)
+
     setGameState((prev) => ({ ...prev, currentMultiplier }));
 
     // Calculate position based on progress
@@ -429,7 +440,7 @@ export function useGameLogic() {
     // Send bet result to API
     await sendBetResult(
       "win",
-      winAmount,
+      winAmount-gameState.betAmount,
       0,
       gameState.currentMultiplier,
       gameState.betAmount
@@ -438,7 +449,7 @@ export function useGameLogic() {
     // Auto restart after 3 seconds
     restartTimerRef.current = window.setTimeout(() => {
       startBettingPhase();
-    }, 3000);
+    }, 5000);
   };
 
   // Handle crash

@@ -19,7 +19,7 @@ export default function GameHeader({
           <div className="item-content">
             <span className="label">BAL</span>
             <span className="value balance-value">
-              {balance.toFixed(1)}
+              {balance.toFixed(2)}
               <span className="currency">BDT</span>
             </span>
           </div>
@@ -30,7 +30,7 @@ export default function GameHeader({
           <div className="item-content">
             <span className="label">BET</span>
             <span className="value bet-value">
-              {betAmount.toFixed(1)}
+              {betAmount.toFixed(2)}
               <span className="currency">BDT</span>
             </span>
           </div>
@@ -41,7 +41,7 @@ export default function GameHeader({
           <div className="item-content">
             <span className="label">MULT</span>
             <span className="value multiplier-value">
-              {currentMultiplier.toFixed(1)}x
+              {currentMultiplier.toFixed(2)}x
             </span>
           </div>
         </div>
